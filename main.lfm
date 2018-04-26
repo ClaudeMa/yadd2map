@@ -1,0 +1,473 @@
+object FormMain: TFormMain
+  Left = 410
+  Height = 561
+  Top = 150
+  Width = 734
+  Caption = 'Yadd To Map'
+  ClientHeight = 541
+  ClientWidth = 734
+  Menu = MainMenu1
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poDesktopCenter
+  LCLVersion = '1.8.2.0'
+  Scaled = False
+  object panelBottom: TPanel
+    Left = 0
+    Height = 55
+    Top = 486
+    Width = 734
+    Align = alBottom
+    ClientHeight = 55
+    ClientWidth = 734
+    TabOrder = 0
+    object ButtonConnect: TButton
+      Left = 144
+      Height = 25
+      Top = -48
+      Width = 75
+      BorderSpacing.InnerBorder = 4
+      Caption = 'Connect'
+      TabOrder = 0
+    end
+    object cbYadd: TCheckBox
+      Left = 40
+      Height = 19
+      Top = 10
+      Width = 123
+      Caption = 'Receive from YADD'
+      OnChange = cbYaddChange
+      TabOrder = 1
+    end
+    object rcvLed: TShape
+      Left = 16
+      Height = 18
+      Top = 10
+      Width = 17
+      Brush.Color = clRed
+    end
+    object sndLed: TShape
+      Left = 248
+      Height = 18
+      Top = 11
+      Width = 17
+      Brush.Color = clRed
+    end
+    object cbRemoteLogging: TCheckBox
+      Left = 280
+      Height = 19
+      Top = 11
+      Width = 140
+      Caption = 'Enable remote logging'
+      OnChange = cbRemoteLoggingChange
+      TabOrder = 2
+    end
+    object ProgressBar1: TProgressBar
+      Left = 1
+      Height = 10
+      Top = 44
+      Width = 732
+      Align = alBottom
+      Step = 1
+      TabOrder = 3
+    end
+    object btnClose: TBitBtn
+      Left = 600
+      Height = 33
+      Top = 2
+      Width = 96
+      BorderSpacing.InnerBorder = 4
+      Caption = 'Exit'
+      Glyph.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF001D63
+        9B1619609839145D9562105A92880D5890A4135C92FC0C578FED999999FF7171
+        71FF545454FF515151FF4F4F4FFF4C4C4CFF4A4A4AFF474747FF454545FF2567
+        9DFF3274A8FF3D7CAFFF4784B5FF4E8ABAFF3E7EADFF0C578FEAFFFFFF00FFFF
+        FF00585858FFA2A2A2FFA2A2A2FFA3A3A3FFA4A4A4FFA4A4A4FFA5A5A5FF2F6F
+        A5FF78ABD2FF78ABD3FF73A7D1FF69A0CDFF407FAEFF0F5991EAFFFFFF00FFFF
+        FF005C5C5CFFA0A0A0FF3C7340FFA2A2A2FFA3A3A3FFA3A3A3FFA4A4A4FF3674
+        AAFF7DAFD4FF5B9AC9FF5495C7FF5896C8FF4180AEFF135C94EAFFFFFF00FFFF
+        FF00606060FF3A773FFF3D7641FFA1A1A1FFA2A2A2FFA2A2A2FFA3A3A3FF3D79
+        B0FF82B3D7FF629FCCFF5A9AC9FF5E9BCAFF4381AFFF196098EAFFFFFF00FFFF
+        FF0039763EFF4D9554FF499150FF286E2DFF266A2AFF236627FF216325FF457E
+        B4FF88B7D9FF67A3CFFF619ECCFF639FCCFF4583B1FF1F649CEAFFFFFF003883
+        3FD4569D5DFF80C688FF7BC383FF77C17FFF72BE79FF6FBC75FF246728FF4C84
+        BAFF8DBBDBFF6EA8D1FF66A6D1FF5FB4DFFF4785B1FF2569A1EA3E8B46A15EA5
+        66FF8BCC94FF7DC586FF73C07CFF6EBD77FF69BB71FF75BF7CFF276C2CFF5489
+        BFFF94BFDDFF75ADD4FF63B8E1FF4BD4FFFF428BB8FF2C6EA6EAFFFFFF003F8C
+        47D25FA667FF8DCD96FF89CB92FF84C88DFF80C688FF7BC383FF2A7030FF5A8E
+        C4FF98C3E0FF7CB3D7FF74AFD6FF5EC4EDFF4B88B3FF3473ABEAFFFFFF00FFFF
+        FF0047894FFF60A769FF5DA465FF37823EFF347E3BFF317937FF2E7534FF6092
+        C9FF9EC7E2FF83B8DAFF7DB4D7FF7EB3D7FF4F89B4FF3B79B1EAFFFFFF00FFFF
+        FF00777777FF4D9054FF3D8A45FF9B9B9BFF9C9C9CFF9D9D9DFF9D9D9DFF6696
+        CCFFA2CBE3FF89BDDCFF83B9DAFF84B9DAFF518BB5FF437EB6EAFFFFFF00FFFF
+        FF007A7A7AFF989998FF529159FF9A9A9AFF9B9B9BFF9C9C9CFF9C9C9CFF6C9A
+        D0FFA7CEE5FF8FC1DFFF89BDDCFF8BBDDCFF538DB6FF4B84BCEAFFFFFF00FFFF
+        FF007D7D7DFF999999FF999999FF9A9A9AFF9A9A9AFF9B9B9BFF9B9B9BFF6F9D
+        D3FFAAD1E7FFABD1E7FF98C7E1FF91C2DEFF568FB7FF5289C1EAFFFFFF00FFFF
+        FF00808080FF7E7E7EFF7C7C7CFF7A7A7AFF777777FF757575FF727272FF719E
+        D4FF6F9ED6FF87B2DCFFABD3E8FFA9D0E6FF5890B8FF598EC6EAFFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00709ED6DB6D9CD4FF85B1DAFF5A91B9FF6093CBEAFFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF006D9CD4896A9AD2FB6697CFEE
+      }
+      OnClick = btnCloseClick
+      TabOrder = 4
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Height = 152
+    Top = 0
+    Width = 734
+    Align = alTop
+    ClientHeight = 152
+    ClientWidth = 734
+    TabOrder = 1
+    object panelYadd: TPanel
+      Left = 1
+      Height = 150
+      Top = 1
+      Width = 215
+      Align = alLeft
+      ClientHeight = 150
+      ClientWidth = 215
+      TabOrder = 0
+      object LabelPort: TLabel
+        Left = 16
+        Height = 15
+        Top = 8
+        Width = 109
+        Caption = 'Listening YADD port:'
+        ParentColor = False
+      end
+      object EditPort: TEdit
+        Left = 16
+        Height = 23
+        Top = 32
+        Width = 136
+        TabOrder = 0
+        Text = '50666'
+      end
+      object Label1: TLabel
+        Left = 16
+        Height = 15
+        Top = 120
+        Width = 96
+        Caption = 'Message received:'
+        ParentColor = False
+      end
+      object editReceived: TEdit
+        Left = 128
+        Height = 23
+        Top = 120
+        Width = 64
+        Alignment = taRightJustify
+        TabOrder = 1
+        Text = '0'
+      end
+    end
+    object panelYadNet: TPanel
+      Left = 520
+      Height = 150
+      Top = 1
+      Width = 213
+      Align = alRight
+      ClientHeight = 150
+      ClientWidth = 213
+      TabOrder = 1
+      object Label3: TLabel
+        Left = 10
+        Height = 15
+        Top = 8
+        Width = 180
+        Caption = 'Hostname or Ip of Remote Logger'
+        ParentColor = False
+      end
+      object editRemotehost: TEdit
+        Left = 10
+        Height = 23
+        Top = 32
+        Width = 184
+        TabOrder = 0
+        Text = 'GM4SLV.PLUS.COM'
+      end
+      object Label2: TLabel
+        Left = 10
+        Height = 15
+        Top = 64
+        Width = 69
+        Caption = 'Port Number'
+        ParentColor = False
+      end
+      object editRemotePort: TEdit
+        Left = 10
+        Height = 23
+        Top = 80
+        Width = 80
+        TabOrder = 1
+        Text = '50666'
+      end
+      object lable3: TLabel
+        Left = 10
+        Height = 15
+        Top = 120
+        Width = 74
+        Caption = 'Message sent:'
+        ParentColor = False
+      end
+      object EditSent: TEdit
+        Left = 96
+        Height = 23
+        Top = 120
+        Width = 80
+        Alignment = taRightJustify
+        TabOrder = 2
+        Text = '0'
+      end
+    end
+    object panelData: TPanel
+      Left = 216
+      Height = 150
+      Top = 1
+      Width = 304
+      Align = alClient
+      ClientHeight = 150
+      ClientWidth = 304
+      TabOrder = 2
+      object Label5: TLabel
+        Left = 10
+        Height = 15
+        Top = 56
+        Width = 30
+        Caption = 'Date :'
+        ParentColor = False
+      end
+      object eDateHeard: TDateEdit
+        Left = 8
+        Height = 23
+        Top = 80
+        Width = 103
+        CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
+        DefaultToday = True
+        DateOrder = doNone
+        DateFormat = 'yyyy-mm-dd'
+        ButtonWidth = 23
+        NumGlyphs = 1
+        MaxLength = 0
+        TabOrder = 0
+        Text = 'eDateHeard'
+      end
+      object Label4: TLabel
+        Left = 10
+        Height = 15
+        Top = 8
+        Width = 105
+        Caption = 'Display MMSI heard'
+        ParentColor = False
+      end
+      object cbHeard: TComboBox
+        Left = 10
+        Height = 23
+        Top = 24
+        Width = 100
+        ItemHeight = 15
+        ItemIndex = 1
+        Items.Strings = (
+          'last hour'
+          'last 2 hours'
+          'last 6 hours'
+          'last 12 hours'
+          'all'
+        )
+        Style = csDropDownList
+        TabOrder = 1
+        Text = 'last 2 hours'
+      end
+      object btnMap: TBitBtn
+        Left = 10
+        Height = 30
+        Top = 112
+        Width = 105
+        Caption = 'Update data'
+        Glyph.Data = {
+          36040000424D3604000000000000360000002800000010000000100000000100
+          20000000000000040000640000006400000000000000000000004B544CB75F6A
+          61FF636F64FF646F64FF646F65FF646F65FF646F66FF646F66FF646F66FF646F
+          66FF646F66FF646F67FF646F67FF647067FF616C63FF4C554EB75F6A60FFEBF5
+          ECFFD4EDD7FFD4EED7FFD4EED8FFD5EED8FFD5EED9FFD5EED9FFD6EFDAFFD6EF
+          DAFFD4E2ECFFCFE5D6FFD5EDD9FFD8EFDCFFD5EDD9FF616C63FF626E64FFEEF8
+          EFFFA4DBBCFF8CCAA6FF98D5B1FF86C9A1FF74ADC0FF5687C6FF83C2B6FF77AC
+          AFFF6970EBFF81C5A3FF8CD0A6FF85CAA0FFD2E9D7FF646F67FF616E64FFECF7
+          EEFF96DBAFFF7FC99AFF8FD8AAFF7AC897FF8AD6A9FF5FA2ACFF5588D7FF485D
+          E0FF79A8C9FF7FC999FF87D0A0FF80CA9AFFD6EEDAFF646F66FF616E63FFF7FB
+          F8FF9BDEC4FF73C393FF80CF9FFF6FC18FFF7ECE9DFF6EBF8CFF70A4BBFF4858
+          DAFF4C7CD1FF518DB6FF73BE9DFF74C38FFFD7EFDAFF646F66FF616E63FFF8FC
+          F9FFBCFBFBFF9DE7DFFF93E1BBFF77C997FF89DAA9FF75C698FF717CF3FF6BAE
+          ADFF82E1DDFF58A7E1FF568CE6FF619FBDFFD0E9DBFF646F66FF606D63FFF8FC
+          F8FFA4EBEDFF8DDFDFFF97EBEBFF72CFB7FF74CA99FF5683B0FF6078D7FF51C3
+          B6FF90D5CDFF50C6C6FF7ED0DDFF6499DBFFCAE4DCFF646F66FF606D62FFF8FC
+          F8FFAFFAFAFF94EBEBFFA2F9FAFF8AEAEBFF95EDF3FF595FEBFF87D9E6FF5CD2
+          D1FFDCDBC9FFACD4CDFF97DAD4FF77D1CEFFD4EFDBFF646F65FF606D61FFF8FC
+          F8FF9FF1F1FF81DDDFFF8AEAEBFF75DEDEFF6591EEFF557EE2FF68DCDDFF77BF
+          B7FFE5C8B2FFDABAA3FFDEBCA6FFD9B79FFFD6EDD8FF646F64FF5F6D61FFF8FC
+          F8FFA6F9F9FF8BE9EAFF99F8FAFF78D3EBFF656BFFFF77DCEAFF70DFDEFFC1C5
+          B5FFF1D1BAFFE5C1A9FFEAC7AEFFE4BDA1FFD6EDD7FF636F64FF5F6D61FFF8FC
+          F8FF90EAEAFF78DDDEFF81E9EAFF4E6BE2FF639DEEFF5ED7D7FF5BCBC9FFD4B0
+          97FFE2BA9FFFD6AC8FFFDBB091FFD4A786FFD6EDD7FF636E64FF5F6D61FFF7FC
+          F8FF9FF9F9FF85E9EAFF84D3FAFF525AF0FF87F2F7FF60DAD7FF98D5CAFFE0B7
+          9CFFEDC7A9FFE0B394FFE6B898FFDEAE8CFFD7ECD6FF636E64FF5F6D60FFF7FC
+          F8FF8AEAEAFF72DDDEFF5665F0FF569FDFFF73E8E8FF46C1C1FFBBBBA5FFD0A4
+          83FFDEB08EFFD19E7AFFD6A27AFFCF9871FFD7EBD5FF626E64FF5F6D60FFF7FC
+          F8FF9DF9F9FF6CB4EDFF6271FEFF80E7E9FF8CF4F4FF52CDCDFFECC2A4FFDDAD
+          8AFFEBBA97FFDDA780FFE2AB83FFDAA075FFD9EAD4FF616E64FF5C6A5DFFFBFC
+          FBFFFCFEFCFFF7FCF8FFF7FCF8FFF7FCF8FFF8FCF8FFF7FCF9FFF8FCF8FFF8FC
+          F8FFECF7EEFFEDF7EEFFEFF6EDFFEEF4ECFFEBF4EBFF5E6A5FFF49544ABD5C6A
+          5DFF5F6D60FF5F6D60FF5F6D60FF5F6D60FF5F6D61FF5F6D61FF5F6D61FF5F6D
+          61FF606D61FF606D62FF606D62FF606D63FF5E6A5FFF4A544BBD
+        }
+        OnClick = btnMapClick
+        TabOrder = 2
+      end
+    end
+  end
+  object PageControl1: TPageControl
+    Left = 0
+    Height = 334
+    Top = 152
+    Width = 734
+    ActivePage = tabLogs
+    Align = alClient
+    TabIndex = 1
+    TabOrder = 2
+    object tabYadd: TTabSheet
+      Caption = 'Receive from YADD'
+      ClientHeight = 306
+      ClientWidth = 726
+      object MemoText: TRichMemo
+        Left = 0
+        Height = 306
+        Top = 0
+        Width = 726
+        Align = alClient
+        Font.Height = -13
+        HideSelection = False
+        ParentFont = False
+        ReadOnly = True
+        ScrollBars = ssAutoBoth
+        TabOrder = 0
+        ZoomFactor = 1
+      end
+    end
+    object tabLogs: TTabSheet
+      Caption = 'Logs'
+      ClientHeight = 306
+      ClientWidth = 726
+      object MemoLogs: TRichMemo
+        Left = 0
+        Height = 306
+        Top = 0
+        Width = 726
+        Align = alClient
+        Font.Height = -13
+        HideSelection = False
+        Lines.Strings = (
+          'MemoLogs'
+        )
+        ParentFont = False
+        PopupMenu = PopupMenu1
+        ScrollBars = ssAutoBoth
+        TabOrder = 0
+        ZoomFactor = 1
+      end
+    end
+  end
+  object YaddUDP: TLUDPComponent
+    Port = 0
+    OnReceive = LTCPComponentReceive
+    OnError = LTCPComponentError
+    Timeout = 0
+    left = 552
+    top = 200
+  end
+  object MainMenu1: TMainMenu
+    left = 480
+    top = 200
+    object mFile: TMenuItem
+      Caption = '&File'
+      object mExit: TMenuItem
+        Caption = 'E&xit'
+        OnClick = mExitClick
+      end
+    end
+    object mSettings: TMenuItem
+      Caption = 'Settings'
+      object mRxPosition: TMenuItem
+        Caption = 'RX position'
+        OnClick = mRxPositionClick
+      end
+    end
+    object MenuItemHelp: TMenuItem
+      Caption = '&Help'
+      object MenuItemAbout: TMenuItem
+        Caption = '&About'
+        OnClick = MenuItemAboutClick
+      end
+    end
+  end
+  object TimerQuit: TTimer
+    Enabled = False
+    Interval = 200
+    OnTimer = TimerQuitTimer
+    left = 472
+    top = 264
+  end
+  object RemoteUDP: TLUDPComponent
+    Port = 0
+    OnError = LTCPComponentError
+    Timeout = 0
+    left = 616
+    top = 296
+  end
+  object sConnection: TZConnection
+    ControlsCodePage = cCP_UTF8
+    AutoEncodeStrings = False
+    Properties.Strings = (
+      'AutoEncodeStrings='
+    )
+    Port = 0
+    Protocol = 'sqlite-3'
+    left = 24
+    top = 200
+  end
+  object sQuery: TZQuery
+    Connection = sConnection
+    Params = <>
+    left = 80
+    top = 200
+  end
+  object mapQuery: TZQuery
+    Connection = sConnection
+    Params = <>
+    left = 160
+    top = 200
+  end
+  object TimerData: TTimer
+    Interval = 300000
+    OnTimer = TimerDataTimer
+    left = 104
+    top = 280
+  end
+  object PopupMenu1: TPopupMenu
+    left = 375
+    top = 210
+    object mSaveLogBook: TMenuItem
+      Caption = 'Save'
+      OnClick = mSaveLogBookClick
+    end
+  end
+end
