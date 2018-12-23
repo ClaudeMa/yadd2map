@@ -59,7 +59,8 @@
                 }).on('mouseover', function() {				    
                     this.bindPopup("MMSI: <a href='https://www.marinetraffic.com/en/ais/details/ships/mmsi:" + feature.properties.Mmsi + "' target='_blank'>" + feature.properties.Mmsi + 
 					"</a><br/>Name: <b>" + feature.properties.Name + "</b><br/>Last heard: " + feature.properties.Date + " at " + feature.properties.Hour + 
-					"<br/>distance: " + mydistance.toFixed(2) + " km").openPopup();
+                    "<br/>On " + feature.properties.frequency + " Khz" +
+                    "<br/>distance: " + mydistance.toFixed(2) + " km").openPopup();
                 }).bindLabel(feature.properties.Name, {
 					noHide: true,
 					direction: 'auto',
@@ -78,7 +79,8 @@
                 }).on('mouseover', function() {
 					var mydistance = distance(mylat, mylon, latlng.lat, latlng.lng, 'K');
                      this.bindPopup("MMSI: " + feature.properties.Mmsi + 
-					"<br/>Name: <b>" + feature.properties.Name + "</b><br/>Last heard: " + feature.properties.Date + " at " + feature.properties.Hour + 
+					"<br/>Name: <b>" + feature.properties.Name + "</b><br/>Last heard: " + feature.properties.Date + " at " + feature.properties.Hour +
+                    "<br/>On " + feature.properties.frequency + " Khz" +
 					"<br/>distance: " + mydistance.toFixed(2) + " km").openPopup();
                 }).bindLabel(feature.properties.Name, {
 					noHide: true,

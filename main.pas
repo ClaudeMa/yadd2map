@@ -619,6 +619,7 @@ begin
       geoJsondata.Properties.Hour := mapQuery.FieldByName('log_time').AsString;
       geoJsondata.Properties.Name := mapQuery.FieldByName('name_from').AsString;
       geoJsondata.Properties.MMSI := mapQuery.FieldByName('mmsi_from').AsString;
+      geoJsondata.Properties.Frequency := mapQuery.FieldByName('rx_frequencie').AsString;
       if leftStr(geoJsondata.Properties.MMSI, 1) <> '0' then
         geoJsondata.Properties.Description := 'SHIP'
       else

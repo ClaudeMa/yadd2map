@@ -160,6 +160,7 @@
 				var popup = L.popup().setContent(
 					"MMSI: <a href='https://www.marinetraffic.com/en/ais/details/ships/mmsi:" + feature.properties.Mmsi + "' target='_blank'>" + feature.properties.Mmsi + 
 					"</a><br/>Name: <b>" + feature.properties.Name + "</b><br/>Last heard: " + feature.properties.Date + " at " + feature.properties.Hour + 
+					"<br/>On " + feature.properties.Frequency + " Khz" +
 					"<br/>distance: " + mydistance.toFixed(2) + " km"
 				);
                 var marker = L.marker(latlng, {
@@ -187,6 +188,7 @@
 				var popup = L.popup().setContent(
 					"MMSI: " + feature.properties.Mmsi + 
 					"<br/>Name: <b>" + feature.properties.Name + "</b><br/>Last heard: " + feature.properties.Date + " at " + feature.properties.Hour + 
+					"<br/>On " + feature.properties.Frequency + " Khz" +
 					"<br/>distance: " + mydistance.toFixed(2) + " km"
 				);
 				var marker =  L.marker(latlng, {				
