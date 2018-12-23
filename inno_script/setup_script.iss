@@ -50,7 +50,6 @@ Source: "..\map\js\distance.js"; DestDir: "{pf}\yadd2map\map\js"; Flags: ignorev
 Source: "..\map\js\leaflet.label.css"; DestDir: "{pf}\yadd2map\map\js"; Flags: ignoreversion
 Source: "..\map\js\leaflet.label.js"; DestDir: "{pf}\yadd2map\map\js"; Flags: ignoreversion
 Source: "..\map\js\yadd2map.js"; DestDir: "{pf}\yadd2map\map\js"; Flags: ignoreversion
-Source: "..\map\lib\distance.js"; DestDir: "{pf}\yadd2map\map\lib"; Flags: ignoreversion
 Source: "..\map\data\home.json"; DestDir: "{pf}\yadd2map\map\data"; Permissions: authusers-full
 
 [Icons]
