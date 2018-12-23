@@ -8,7 +8,7 @@
       </Flags>
       <SessionStorage Value="InProjectDir"/>
       <MainUnit Value="0"/>
-      <Title Value="Yadd to Map"/>
+      <Title Value="Yadd2Map"/>
       <Icon Value="0"/>
     </General>
     <BuildModes Count="2">
@@ -20,6 +20,7 @@
             <Filename Value="yadd2map"/>
           </Target>
           <SearchPaths>
+            <OtherUnitFiles Value="actions"/>
             <SrcPath Value="$(LazarusDir)/lcl;$(LazarusDir)/lcl/interfaces/$(LCLWidgetType)"/>
           </SearchPaths>
           <Parsing>
@@ -60,37 +61,46 @@
         <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="9">
+    <RequiredPackages Count="12">
       <Item1>
-        <PackageName Value="jujiboutils"/>
+        <PackageName Value="internettools_autoupdate"/>
       </Item1>
       <Item2>
-        <PackageName Value="internettools"/>
+        <PackageName Value="BrookDT"/>
       </Item2>
       <Item3>
-        <PackageName Value="zcomponent"/>
+        <PackageName Value="BrookRT"/>
       </Item3>
       <Item4>
-        <PackageName Value="richmemopackage"/>
+        <PackageName Value="jujiboutils"/>
       </Item4>
       <Item5>
-        <PackageName Value="LazControls"/>
+        <PackageName Value="internettools"/>
       </Item5>
       <Item6>
-        <PackageName Value="FCL"/>
+        <PackageName Value="zcomponent"/>
       </Item6>
       <Item7>
-        <PackageName Value="LCL"/>
+        <PackageName Value="richmemopackage"/>
       </Item7>
       <Item8>
-        <PackageName Value="lnetbase"/>
+        <PackageName Value="LazControls"/>
       </Item8>
       <Item9>
+        <PackageName Value="FCL"/>
+      </Item9>
+      <Item10>
+        <PackageName Value="LCL"/>
+      </Item10>
+      <Item11>
+        <PackageName Value="lnetbase"/>
+      </Item11>
+      <Item12>
         <PackageName Value="lnetvisual"/>
         <MinVersion Minor="4" Release="1" Valid="True"/>
-      </Item9>
+      </Item12>
     </RequiredPackages>
-    <Units Count="4">
+    <Units Count="6">
       <Unit0>
         <Filename Value="yadd2map.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -113,11 +123,22 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit3>
+      <Unit4>
+        <Filename Value="brookthread.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="BrookThread"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="actions/actionmap.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ActionMap"/>
+      </Unit5>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
     <SearchPaths>
+      <OtherUnitFiles Value="actions"/>
       <SrcPath Value="$(LazarusDir)/lcl;$(LazarusDir)/lcl/interfaces/$(LCLWidgetType)"/>
     </SearchPaths>
     <Parsing>

@@ -1,11 +1,11 @@
 object FormMain: TFormMain
   Left = 410
-  Height = 561
-  Top = 150
-  Width = 734
+  Height = 563
+  Top = 148
+  Width = 1033
   Caption = 'Yadd To Map'
-  ClientHeight = 541
-  ClientWidth = 734
+  ClientHeight = 543
+  ClientWidth = 1033
   Menu = MainMenu1
   OnClose = FormClose
   OnCreate = FormCreate
@@ -16,11 +16,11 @@ object FormMain: TFormMain
   object panelBottom: TPanel
     Left = 0
     Height = 55
-    Top = 486
-    Width = 734
+    Top = 488
+    Width = 1033
     Align = alBottom
     ClientHeight = 55
-    ClientWidth = 734
+    ClientWidth = 1033
     TabOrder = 0
     object ButtonConnect: TButton
       Left = 144
@@ -48,14 +48,14 @@ object FormMain: TFormMain
       Brush.Color = clRed
     end
     object sndLed: TShape
-      Left = 248
+      Left = 192
       Height = 18
       Top = 11
       Width = 17
       Brush.Color = clRed
     end
     object cbRemoteLogging: TCheckBox
-      Left = 280
+      Left = 224
       Height = 19
       Top = 11
       Width = 140
@@ -67,13 +67,13 @@ object FormMain: TFormMain
       Left = 1
       Height = 10
       Top = 44
-      Width = 732
+      Width = 1031
       Align = alBottom
       Step = 1
       TabOrder = 3
     end
     object btnClose: TBitBtn
-      Left = 600
+      Left = 624
       Height = 33
       Top = 2
       Width = 96
@@ -118,15 +118,31 @@ object FormMain: TFormMain
       OnClick = btnCloseClick
       TabOrder = 4
     end
+    object webLed: TShape
+      Left = 392
+      Height = 18
+      Top = 10
+      Width = 17
+      Brush.Color = clRed
+    end
+    object cbWebServer: TCheckBox
+      Left = 424
+      Height = 19
+      Top = 11
+      Width = 114
+      Caption = 'Enable web server'
+      OnChange = cbWebServerChange
+      TabOrder = 5
+    end
   end
   object Panel2: TPanel
     Left = 0
     Height = 152
     Top = 0
-    Width = 734
+    Width = 1033
     Align = alTop
     ClientHeight = 152
-    ClientWidth = 734
+    ClientWidth = 1033
     TabOrder = 1
     object panelYadd: TPanel
       Left = 1
@@ -172,7 +188,7 @@ object FormMain: TFormMain
       end
     end
     object panelYadNet: TPanel
-      Left = 520
+      Left = 819
       Height = 150
       Top = 1
       Width = 213
@@ -230,19 +246,19 @@ object FormMain: TFormMain
         Text = '0'
       end
     end
-    object panelData: TPanel
+    object panel1: TPanel
       Left = 216
       Height = 150
       Top = 1
-      Width = 304
+      Width = 603
       Align = alClient
       ClientHeight = 150
-      ClientWidth = 304
+      ClientWidth = 603
       TabOrder = 2
       object Label5: TLabel
         Left = 10
         Height = 15
-        Top = 56
+        Top = 64
         Width = 30
         Caption = 'Date :'
         ParentColor = False
@@ -274,7 +290,7 @@ object FormMain: TFormMain
         Left = 10
         Height = 23
         Top = 24
-        Width = 100
+        Width = 105
         ItemHeight = 15
         ItemIndex = 1
         Items.Strings = (
@@ -333,26 +349,64 @@ object FormMain: TFormMain
         OnClick = btnMapClick
         TabOrder = 2
       end
+      object eHttpPort: TJLabeledIntegerEdit
+        Left = 176
+        Height = 23
+        Top = 24
+        Width = 96
+        DisplayFormat = '0'
+        Value = 8000
+        NegativeColor = clDefault
+        EditLabel.AnchorSideLeft.Control = eHttpPort
+        EditLabel.AnchorSideRight.Control = eHttpPort
+        EditLabel.AnchorSideRight.Side = asrBottom
+        EditLabel.AnchorSideBottom.Control = eHttpPort
+        EditLabel.Left = 176
+        EditLabel.Height = 15
+        EditLabel.Top = 6
+        EditLabel.Width = 96
+        EditLabel.Caption = 'HTTP port'
+        EditLabel.ParentColor = False
+        TabOrder = 3
+      end
+      object btnUrl: TButton
+        Left = 176
+        Height = 25
+        Top = 112
+        Width = 152
+        Caption = 'Open local web server'
+        Enabled = False
+        OnClick = btnUrlClick
+        TabOrder = 4
+      end
+      object lblUrl: TLabel
+        Left = 176
+        Height = 15
+        Top = 88
+        Width = 45
+        Caption = 'URL : ???'
+        ParentColor = False
+      end
     end
   end
   object PageControl1: TPageControl
     Left = 0
-    Height = 334
+    Height = 336
     Top = 152
-    Width = 734
-    ActivePage = tabLogs
+    Width = 1033
+    ActivePage = tabYadd
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 2
     object tabYadd: TTabSheet
       Caption = 'Receive from YADD'
-      ClientHeight = 306
-      ClientWidth = 726
+      ClientHeight = 308
+      ClientWidth = 1025
       object MemoText: TRichMemo
         Left = 0
-        Height = 306
+        Height = 308
         Top = 0
-        Width = 726
+        Width = 1025
         Align = alClient
         Font.Height = -13
         HideSelection = False
@@ -469,5 +523,13 @@ object FormMain: TFormMain
       Caption = 'Save'
       OnClick = mSaveLogBookClick
     end
+  end
+  object BrookFCLEventLogHandler1: TBrookFCLEventLogHandler
+    Active = True
+    FileName = 'log'
+    Output = loFile
+    Types = [ltCustom, ltInfo, ltWarning, ltError, ltDebug]
+    left = 368
+    top = 304
   end
 end

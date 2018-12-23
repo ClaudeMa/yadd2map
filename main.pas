@@ -6,10 +6,10 @@ interface
 
 uses
   Classes, SysUtils, simpleipc, sqlite3conn, sqldb, LResources, Forms, Controls,
-  shellApi, Graphics, Dialogs, StdCtrls, DateUtils, Buttons, lNetComponents, lNet,
-  ExtCtrls, Menus, GeoJson, ComCtrls, EditBtn, ZConnection, ZDataset, RichMemo,
-  strutils, xquery, simpleinternet, fpHTTP,
-  RxPosition,
+  shellApi, Graphics, Dialogs, StdCtrls, DateUtils, Buttons, lNetComponents,
+  lNet, ExtCtrls, Menus, GeoJson, ComCtrls, EditBtn, ZConnection, ZDataset,
+  RichMemo, JLabeledIntegerEdit, strutils, xquery, simpleinternet, fpHTTP,
+  RxPosition, BrookFCLEventLogHandler, process, lclIntf,
   //{$IFDEF WINDOWS}
   w32internetaccess;
 //{$ELSE}
@@ -56,34 +56,40 @@ type
   { TFormMain }
 
   TFormMain = class(TForm)
+    BrookFCLEventLogHandler1: TBrookFCLEventLogHandler;
     btnClose: TBitBtn;
     btnMap: TBitBtn;
+    btnUrl: TButton;
     ButtonConnect: TButton;
     cbYadd: TCheckBox;
     cbRemoteLogging: TCheckBox;
     cbHeard: TComboBox;
+    cbWebServer: TCheckBox;
     eDateHeard: TDateEdit;
     EditSent: TEdit;
     editReceived: TEdit;
     editRemotehost: TEdit;
     editRemotePort: TEdit;
+    eHttpPort: TJLabeledIntegerEdit;
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
+    lblUrl: TLabel;
     lable3: TLabel;
     MemoLogs: TRichMemo;
     MemoText: TRichMemo;
     mSaveLogBook: TMenuItem;
     mSettings: TMenuItem;
     mRxPosition: TMenuItem;
-    panelData: TPanel;
+    panel1: TPanel;
     panelYadNet: TPanel;
     panelYadd: TPanel;
     PopupMenu1: TPopupMenu;
     ProgressBar1: TProgressBar;
     RemoteUDP: TLUDPComponent;
+    webLed: TShape;
     TimerData: TTimer;
     YaddUDP: TLUDPComponent;
     EditPort: TEdit;
@@ -106,8 +112,10 @@ type
     mapQuery: TZQuery;
     procedure btnCloseClick(Sender: TObject);
     procedure btnMapClick(Sender: TObject);
+    procedure btnUrlClick(Sender: TObject);
     procedure cbRemoteLoggingChange(Sender: TObject);
     procedure cbYaddChange(Sender: TObject);
+    procedure cbWebServerChange(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -126,12 +134,14 @@ type
     FIsServer: boolean;
     FRemoteLogging: boolean;
     FFnt: TFontParams;
+    WebUrl: String;
     function YaddUdpRecord(buffer: string): TYaddUdpRecord;
     function GetLatLon(MMSI: string): TLatLon;
     function getShipName(AMmsi: string): string;
     function SaveLogRecord(LogRecord: TYAddUDPRecord): boolean;
     function genGeoJson: integer;
     function GetCoastInfo(AMmsi: string): TCoast;
+    function GetIpAddrList(): string;
     procedure appendText(AMemo: TRichMemo; AStr: string; AColor: TColor = clBlack);
   public
   end;
@@ -147,6 +157,8 @@ var
 
 implementation
 
+uses BrookThread;
+
 { TFormMain }
 
 procedure TFormMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -156,6 +168,7 @@ begin
   mapQuery.Close;
   sConnection.Disconnect;
   CloseAction := caFree;
+  BrookThread.Stop;
   if FRemoteNet.Connected then
   begin
     FRemoteNet.Disconnect;
@@ -186,6 +199,27 @@ begin
   end;
 end;
 
+procedure TFormMain.cbWebServerChange(Sender: TObject);
+begin
+     if cbWebServer.Checked then
+     begin
+       Weburl := 'http://' + trim(GetIpAddrList) + ':' + trim(eHttpPort.Text) + '/map';
+       lblUrl.Caption:= 'URL : ' + weburl;
+       btnUrl.Enabled:= true;
+       BrookThread.Start(StrToInt(eHttpPort.Text));
+       Webled.Brush.Color := clGreen;
+       appendtext(MemoLogs,'Web server started on port ' + eHttpPort.Text, SHIP_COLOR);
+     end
+     else
+     begin
+        btnUrl.Enabled := false;
+       lblUrl.Caption:= 'URL : ???';
+        BrookThread.Stop;
+        WebLed.Brush.Color := clRed;
+        appendtext(MemoLogs,'Web server stopped', ERROR_COLOR);
+     end;
+end;
+
 procedure TFormMain.btnCloseClick(Sender: TObject);
 begin
   if MessageDlg('Question', 'Exit Yadd2Map?', mtConfirmation,
@@ -213,6 +247,11 @@ begin
   end
   else
     ShowMessage('Nothing to show on map today');
+end;
+
+procedure TFormMain.btnUrlClick(Sender: TObject);
+begin
+  OpenURL(weburl);
 end;
 
 procedure TFormMain.cbRemoteLoggingChange(Sender: TObject);
@@ -368,7 +407,7 @@ begin
   MemoLogs.GetTextAttributes(0, FFnt);
   MemoLogs.Clear;
   try
-    sConnection.Database := GetCurrentDir + '/logbook.db';
+    sConnection.Database := GetCurrentDir + '/db/logbook.db';
     sconnection.Connect;
     Appendtext(MemoLogs, FormatdateTime('dd/mm/yy hh:nn', now) +
       ': Connected to database ' + sConnection.Database);
@@ -376,7 +415,7 @@ begin
     On e: Exception do
     begin
       Appendtext(MemoLogs, e.Message, ERROR_COLOR);
-      ShowMessage('Unable to connect to database. Data will not be save');
+      ShowMessage('Unable to connect to database "' + GetCurrentDir + '/db/logbook.db". Data will not be save');
     end;
   end;
 end;
@@ -496,13 +535,15 @@ var
   startTime: string;
   minute: string;
   hh: integer;
+  recordCount: Integer;
+  i: Integer;
 begin
   if CompareDate(eDateHeard.Date, Now) = 0 then
   begin
     if cbHeard.ItemIndex = 4 then
     begin
       where := ' WHERE log_date = "' + FormatDateTime('yyyy-mm-dd', now) +
-        '" GROUP BY mmsi_from ORDER BY log_time;';
+        '" AND latitude <> 0  AND longitude <> 0 GROUP BY mmsi_from ORDER BY name_from;';
     end
     else
     begin
@@ -544,7 +585,7 @@ begin
     where := ' log_date = "' + FormatDateTime('yyyy-mm-dd', eDateHeard.Date) + '" ';
   end;
   queryString := 'SELECT * FROM logs WHERE ' + where +
-    '  GROUP BY mmsi_from ORDER BY log_date, log_time;';
+    ' AND latitude <> 0  AND longitude <> 0 GROUP BY mmsi_from ORDER BY name_from;';
   mapQuery.SQL.Clear;
   mapQuery.SQL.Add(queryString);
   try
@@ -558,7 +599,9 @@ begin
       exit;
     end;
   end;
-  if mapQuery.RecordCount > 0 then
+  RecordCount := MapQuery.RecordCount;
+  i := 1;
+  if RecordCount > 0 then
   begin
     ProgressBar1.Max := mapQuery.RecordCount;
     GeoJson := TGeoJson.Create;
@@ -584,8 +627,8 @@ begin
       if (geoJsonData.Geometry.Longitude <> '0') and
         (geoJsonData.Geometry.Latitude <> '0') then
       begin
-        if mapQuery.EOF then
-          GeoJson.addData(geoJsonData, True)
+        if MapQuery.EOF then
+          GeoJson.addData(geoJsonData, true)
         else
           GeoJson.addData(geoJsonData);
       end;
@@ -628,6 +671,59 @@ begin
     Result.Latitude := '0';
     Result.Longitude := '0';
   end;
+end;
+
+function TFormMain.GetIpAddrList(): string;
+var
+  AProcess: TProcess;
+  s: string;
+  sl: TStringList;
+  i, n: integer;
+
+begin
+  Result:='';
+  sl:=TStringList.Create();
+  {$IFDEF WINDOWS}
+  AProcess:=TProcess.Create(nil);
+  AProcess.CommandLine := 'ipconfig.exe';
+  AProcess.Options := AProcess.Options + [poUsePipes, poNoConsole];
+  try
+    AProcess.Execute();
+    Sleep(500); // poWaitOnExit don't work as expected
+    sl.LoadFromStream(AProcess.Output);
+  finally
+    AProcess.Free();
+  end;
+  for i:=0 to sl.Count-1 do
+  begin
+    if (Pos('IPv4', sl[i])=0) and (Pos('IP-', sl[i])=0) and (Pos('IP Address', sl[i])=0) then Continue;
+    s:=sl[i];
+    s:=Trim(Copy(s, Pos(':', s)+1, 999));
+    if Pos(':', s)>0 then Continue; // IPv6
+    Result:=Result+s+'  ';
+  end;
+  {$ENDIF}
+  {$IFDEF UNIX}
+  AProcess:=TProcess.Create(nil);
+  AProcess.CommandLine := '/sbin/ifconfig';
+  AProcess.Options := AProcess.Options + [poUsePipes, poWaitOnExit];
+  try
+    AProcess.Execute();
+    sl.LoadFromStream(AProcess.Output);
+  finally
+    AProcess.Free();
+  end;
+
+  for i:=0 to sl.Count-1 do
+  begin
+    n:=Pos('inet addr:', sl[i]);
+    if n=0 then Continue;
+    s:=sl[i];
+    s:=Copy(s, n+Length('inet addr:'), 999);
+    Result:=Result+Trim(Copy(s, 1, Pos(' ', s)))+'  ';
+  end;
+  {$ENDIF}
+  sl.Free();
 end;
 
 initialization

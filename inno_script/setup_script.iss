@@ -2,9 +2,10 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Yadd To Map"
-#define MyAppVersion "1.0"
+#define MyAppVersion "1.1"
 #define MyAppPublisher "F5065SWL"
 #define MyAppExeName "yadd2map.exe"
+#define CreationDate GetDateTimeString('ddmmyy', '-', ':');
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -18,7 +19,7 @@ AppPublisher={#MyAppPublisher}
 DefaultDirName={userdocs}\Yadd2Map
 DefaultGroupName={#MyAppName}
 LicenseFile=..\COPYING
-OutputBaseFilename=setup_Yadd2Map
+OutputBaseFilename=setup_Yadd2Map_{#CreationDate}
 Compression=lzma
 SolidCompression=yes
 
@@ -30,24 +31,42 @@ Name: "french"; MessagesFile: "compiler:Languages\French.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "..\yadd2map.exe"; DestDir: "{userdocs}\yadd2map"; Flags: ignoreversion
-Source: "..\db\logbook.db"; DestDir: "{userdocs}\yadd2map"; Flags: ignoreversion onlyifdoesntexist uninsneveruninstall
-Source: "..\map\lib\*"; DestDir: "{userdocs}\yadd2map\map\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\manual\doc_fr.pdf"; DestDir: "{userdocs}\yadd2map\manual"; Flags: ignoreversion
-Source: "..\lib\32\sqlite3.dll"; DestDir: "{userdocs}\yadd2map"
-Source: "..\map\map.html"; DestDir: "{userdocs}\yadd2map\map"; Flags: ignoreversion
-Source: "..\COPYING"; DestDir: "{userdocs}\yadd2map"; Flags: ignoreversion
-Source: "..\CREDITS"; DestDir: "{userdocs}\yadd2map"; Flags: ignoreversion
-Source: "..\map\favicon.png"; DestDir: "{userdocs}\yadd2map\map"
+Source: "..\yadd2map.exe"; DestDir: "{pf}\yadd2map"; Flags: ignoreversion
+Source: "..\db\logbook.db"; DestDir: "{pf}\yadd2map\db"; Flags: ignoreversion onlyifdoesntexist uninsneveruninstall; Permissions: authusers-full
+Source: "..\manual\doc_fr.pdf"; DestDir: "{pf}\yadd2map\manual"; Flags: ignoreversion
+Source: "..\..\sqlite3.dll"; DestDir: "{pf}\yadd2map"
+Source: "..\COPYING"; DestDir: "{pf}\yadd2map"; Flags: ignoreversion
+Source: "..\CREDITS"; DestDir: "{pf}\yadd2map"; Flags: ignoreversion
+Source: "..\map\favicon.png"; DestDir: "{pf}\yadd2map\map"
+Source: "..\mime.types"; DestDir: "{pf}\yadd2map"
+Source: "..\map\404.html"; DestDir: "{pf}\yadd2map\map"; Flags: ignoreversion
+Source: "..\map\500.html"; DestDir: "{pf}\yadd2map\map"; Flags: ignoreversion
+Source: "..\map\favicon.png"; DestDir: "{pf}\yadd2map\map"; Flags: ignoreversion
+Source: "..\map\index.html"; DestDir: "{pf}\yadd2map\map"; Flags: ignoreversion
+Source: "..\map\map.html"; DestDir: "{pf}\yadd2map\map"; Flags: ignoreversion
+Source: "..\map\yadd2map.css"; DestDir: "{pf}\yadd2map\map"; Flags: ignoreversion
+Source: "..\map\img\favicon.png"; DestDir: "{pf}\yadd2map\map\img"; Flags: ignoreversion
+Source: "..\map\js\distance.js"; DestDir: "{pf}\yadd2map\map\js"; Flags: ignoreversion
+Source: "..\map\js\leaflet.label.css"; DestDir: "{pf}\yadd2map\map\js"; Flags: ignoreversion
+Source: "..\map\js\leaflet.label.js"; DestDir: "{pf}\yadd2map\map\js"; Flags: ignoreversion
+Source: "..\map\js\yadd2map.js"; DestDir: "{pf}\yadd2map\map\js"; Flags: ignoreversion
+Source: "..\map\lib\distance.js"; DestDir: "{pf}\yadd2map\map\lib"; Flags: ignoreversion
+Source: "..\map\data\home.json"; DestDir: "{pf}\yadd2map\map\data"; Permissions: authusers-full
 
 [Icons]
-Name: "{group}\{#MyAppName}"; Filename: "{userdocs}\yadd2map\{#MyAppExeName}"
-Name: "{commondesktop}\{#MyAppName}"; Filename: "{userdocs}\yadd2map\{#MyAppExeName}"; Tasks: desktopicon
-Name: "{group}\Documentation"; Filename: "{userdocs}\yadd2map\manual\doc_fr.pdf"
+Name: "{group}\{#MyAppName}"; Filename: "{pf}\yadd2map\yadd2map.exe"
+Name: "{commondesktop}\{#MyAppName}"; Filename: "{pf}\yadd2map\yadd2map.exe"; Tasks: desktopicon
+Name: "{group}\Documentation"; Filename: "{pf}\yadd2map\manual\doc_fr.pdf"
 
 [Run]
-Filename: "{userdocs}\yadd2map\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{pf}\yadd2map\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [Dirs]
-Name: "{userdocs}\yadd2map\logs"
-Name: "{userdocs}\yadd2map\map\data"
+Name: "{pf}\yadd2map\logs"; Permissions: authusers-full
+Name: "{pf}\yadd2map\map\data"; Permissions: authusers-full
+Name: "{pf}\yadd2map\db"; Permissions: authusers-full
+Name: "{app}\map\data\"
+Name: "{app}\map\img\"
+Name: "{app}\map\js\"
+Name: "{app}\map\lib\"
+Name: "{app}\map\lib\Leaflet.label\"

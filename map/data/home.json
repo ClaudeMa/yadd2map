@@ -1,0 +1,20 @@
+{
+	"type": "FeatureCollection",
+	"features": [
+		{
+			"type": "Feature",
+			"properties": {
+				"Date": "02/12/2018",
+				"Hour": "13/11/00",
+				"Mmsi": "",
+				"Name": "RX position",
+				"Description": ""
+
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [3.4771729,45]
+			}
+		}
+	]
+}

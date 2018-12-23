@@ -9,12 +9,16 @@ uses
   lazcontrols,
   main,
   geojson,
-  rxposition;
+  rxposition, BrookThread, brookdt, ActionMap
+  {$IFDEF UNIX}
+  , cthreads
+  {$ENDIF} ;
 
 {$R *.res}
 
 begin
-  Application.Title := 'Yadd to Map';
+  RequireDerivedFormResource := True;
+  Application.Title:='Yadd2Map';
   Application.Initialize;
   Application.CreateForm(TFormMain, FormMain);
   Application.Run;
