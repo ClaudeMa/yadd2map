@@ -106,7 +106,7 @@ begin
   Query.SQL.Add(queryString);
   Query.Open;
   genGeoJson(query);
-  Render('/map/index.html');
+  Render('map/index.html');
 end;
 
 function TMap.genHour(hh: integer; mm: integer; diff: integer = 2): string;
@@ -151,6 +151,7 @@ begin
     geoJsondata.Properties.Hour := AQuery.FieldByName('log_time').AsString;
     geoJsondata.Properties.Name := AQuery.FieldByName('name_from').AsString;
     geoJsondata.Properties.MMSI := AQuery.FieldByName('mmsi_from').AsString;
+    geoJsondata.Properties.Frequency := AQuery.FieldByName('frequencie').AsString;
     if leftStr(geoJsondata.Properties.MMSI, 1) <> '0' then
       geoJsondata.Properties.Description := 'SHIP'
     else
@@ -187,6 +188,6 @@ begin
 end;
 
 initialization
-  TMap.Register('/map/');
+  TMap.Register('map/');
 
 end.
