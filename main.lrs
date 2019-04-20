@@ -1,16 +1,16 @@
 { This is an automatically generated lazarus resource file }
 
 LazarusResources.Add('TFormMain','FORMDATA',[
-  'TPF0'#9'TFormMain'#8'FormMain'#4'Left'#3#206#1#6'Height'#3'3'#2#3'Top'#2'x'#5
-  +'Width'#3#9#4#7'Caption'#6#11'Yadd To Map'#12'ClientHeight'#3#25#2#11'Client'
-  +'Width'#3#9#4#13'DesignTimePPI'#2'b'#4'Menu'#7#9'MainMenu1'#7'OnClose'#7#9'F'
-  +'ormClose'#8'OnCreate'#7#10'FormCreate'#6'OnShow'#7#8'FormShow'#8'Position'#7
-  +#15'poDesktopCenter'#10'LCLVersion'#6#7'2.0.0.4'#6'Scaled'#8#0#6'TPanel'#11
-  +'panelBottom'#4'Left'#2#0#6'Height'#2'7'#3'Top'#3#226#1#5'Width'#3#9#4#5'Ali'
-  +'gn'#7#8'alBottom'#12'ClientHeight'#2'7'#11'ClientWidth'#3#9#4#8'TabOrder'#2
-  +#0#0#7'TButton'#13'ButtonConnect'#4'Left'#3#144#0#6'Height'#2#25#3'Top'#2#208
-  +#5'Width'#2'K'#25'BorderSpacing.InnerBorder'#2#4#7'Caption'#6#7'Connect'#8'T'
-  +'abOrder'#2#0#0#0#9'TCheckBox'#6'cbYadd'#4'Left'#2'('#6'Height'#2#23#3'Top'#2
+  'TPF0'#9'TFormMain'#8'FormMain'#4'Left'#3'>'#1#6'Height'#3'w'#2#3'Top'#3#202#0
+  +#5'Width'#3#9#4#7'Caption'#6#11'Yadd To Map'#12'ClientHeight'#3']'#2#11'Clie'
+  +'ntWidth'#3#9#4#13'DesignTimePPI'#2'b'#4'Menu'#7#9'MainMenu1'#7'OnClose'#7#9
+  +'FormClose'#8'OnCreate'#7#10'FormCreate'#6'OnShow'#7#8'FormShow'#8'Position'
+  +#7#15'poDesktopCenter'#10'LCLVersion'#6#7'2.0.0.4'#6'Scaled'#8#0#6'TPanel'#11
+  +'panelBottom'#4'Left'#2#0#6'Height'#2'7'#3'Top'#3'&'#2#5'Width'#3#9#4#5'Alig'
+  +'n'#7#8'alBottom'#12'ClientHeight'#2'7'#11'ClientWidth'#3#9#4#8'TabOrder'#2#0
+  +#0#7'TButton'#13'ButtonConnect'#4'Left'#3#144#0#6'Height'#2#25#3'Top'#2#208#5
+  +'Width'#2'K'#25'BorderSpacing.InnerBorder'#2#4#7'Caption'#6#7'Connect'#8'Tab'
+  +'Order'#2#0#0#0#9'TCheckBox'#6'cbYadd'#4'Left'#2'('#6'Height'#2#23#3'Top'#2
   +#10#5'Width'#3#135#0#7'Caption'#6#17'Receive from YADD'#8'OnChange'#7#12'cbY'
   +'addChange'#8'TabOrder'#2#1#0#0#6'TShape'#6'rcvLed'#4'Left'#2#16#6'Height'#2
   +#18#3'Top'#2#10#5'Width'#2#17#11'Brush.Color'#7#5'clRed'#0#0#6'TShape'#6'snd'
@@ -75,11 +75,11 @@ LazarusResources.Add('TFormMain','FORMDATA',[
   +#6'Height'#2#18#3'Top'#2#10#5'Width'#2#17#11'Brush.Color'#7#5'clRed'#0#0#9'T'
   +'CheckBox'#11'cbWebServer'#4'Left'#3#168#1#6'Height'#2#23#3'Top'#2#11#5'Widt'
   +'h'#3#133#0#7'Caption'#6#17'Enable web server'#8'OnChange'#7#17'cbWebServerC'
-  +'hange'#8'TabOrder'#2#5#0#0#0#6'TPanel'#6'Panel2'#4'Left'#2#0#6'Height'#3#152
-  +#0#3'Top'#2#0#5'Width'#3#9#4#5'Align'#7#5'alTop'#12'ClientHeight'#3#152#0#11
+  +'hange'#8'TabOrder'#2#5#0#0#0#6'TPanel'#6'Panel2'#4'Left'#2#0#6'Height'#3#168
+  +#0#3'Top'#2#0#5'Width'#3#9#4#5'Align'#7#5'alTop'#12'ClientHeight'#3#168#0#11
   +'ClientWidth'#3#9#4#8'TabOrder'#2#1#0#6'TPanel'#9'panelYadd'#4'Left'#2#1#6'H'
-  +'eight'#3#150#0#3'Top'#2#1#5'Width'#3#215#0#5'Align'#7#6'alLeft'#12'ClientHe'
-  +'ight'#3#150#0#11'ClientWidth'#3#215#0#8'TabOrder'#2#0#0#6'TLabel'#9'LabelPo'
+  +'eight'#3#166#0#3'Top'#2#1#5'Width'#3#215#0#5'Align'#7#6'alLeft'#12'ClientHe'
+  +'ight'#3#166#0#11'ClientWidth'#3#215#0#8'TabOrder'#2#0#0#6'TLabel'#9'LabelPo'
   +'rt'#4'Left'#2#16#6'Height'#2#18#3'Top'#2#8#5'Width'#2'v'#7'Caption'#6#20'Li'
   +'stening YADD port:'#11'ParentColor'#8#0#0#5'TEdit'#8'EditPort'#4'Left'#2#16
   +#6'Height'#2#30#3'Top'#2' '#5'Width'#3#136#0#8'TabOrder'#2#0#4'Text'#6#5'506'
@@ -87,8 +87,8 @@ LazarusResources.Add('TFormMain','FORMDATA',[
   +#2'k'#7'Caption'#6#17'Message received:'#11'ParentColor'#8#0#0#5'TEdit'#12'e'
   +'ditReceived'#4'Left'#3#128#0#6'Height'#2#30#3'Top'#2'x'#5'Width'#2'@'#9'Ali'
   +'gnment'#7#14'taRightJustify'#8'TabOrder'#2#1#4'Text'#6#1'0'#0#0#0#6'TPanel'
-  +#11'panelYadNet'#4'Left'#3'3'#3#6'Height'#3#150#0#3'Top'#2#1#5'Width'#3#213#0
-  +#5'Align'#7#7'alRight'#12'ClientHeight'#3#150#0#11'ClientWidth'#3#213#0#8'Ta'
+  +#11'panelYadNet'#4'Left'#3'3'#3#6'Height'#3#166#0#3'Top'#2#1#5'Width'#3#213#0
+  +#5'Align'#7#7'alRight'#12'ClientHeight'#3#166#0#11'ClientWidth'#3#213#0#8'Ta'
   +'bOrder'#2#1#0#6'TLabel'#6'Label3'#4'Left'#2#10#6'Height'#2#18#3'Top'#2#8#5
   +'Width'#3#194#0#7'Caption'#6#31'Hostname or Ip of Remote Logger'#11'ParentCo'
   +'lor'#8#0#0#5'TEdit'#14'editRemotehost'#4'Left'#2#10#6'Height'#2#30#3'Top'#2
@@ -100,8 +100,8 @@ LazarusResources.Add('TFormMain','FORMDATA',[
   +'Width'#2'S'#7'Caption'#6#13'Message sent:'#11'ParentColor'#8#0#0#5'TEdit'#8
   +'EditSent'#4'Left'#2'`'#6'Height'#2#30#3'Top'#2'x'#5'Width'#2'P'#9'Alignment'
   +#7#14'taRightJustify'#8'TabOrder'#2#2#4'Text'#6#1'0'#0#0#0#6'TPanel'#6'panel'
-  +'1'#4'Left'#3#216#0#6'Height'#3#150#0#3'Top'#2#1#5'Width'#3'['#2#5'Align'#7#8
-  +'alClient'#12'ClientHeight'#3#150#0#11'ClientWidth'#3'['#2#8'TabOrder'#2#2#0
+  +'1'#4'Left'#3#216#0#6'Height'#3#166#0#3'Top'#2#1#5'Width'#3'['#2#5'Align'#7#8
+  +'alClient'#12'ClientHeight'#3#166#0#11'ClientWidth'#3'['#2#8'TabOrder'#2#2#0
   +#6'TLabel'#6'Label5'#4'Left'#2#10#6'Height'#2#18#3'Top'#2'@'#5'Width'#2'!'#7
   +'Caption'#6#6'Date :'#11'ParentColor'#8#0#0#9'TDateEdit'#10'eDateHeard'#4'Le'
   +'ft'#2#8#6'Height'#2#30#3'Top'#2'P'#5'Width'#2'g'#23'CalendarDisplaySettings'
@@ -173,41 +173,41 @@ LazarusResources.Add('TFormMain','FORMDATA',[
   +#21'Open local web server'#7'Enabled'#8#7'OnClick'#7#11'btnUrlClick'#8'TabOr'
   +'der'#2#4#0#0#6'TLabel'#6'lblUrl'#4'Left'#3#176#0#6'Height'#2#18#3'Top'#2'X'
   +#5'Width'#2'/'#7'Caption'#6#9'URL : ???'#11'ParentColor'#8#0#0#0#0#12'TPageC'
-  +'ontrol'#12'PageControl1'#4'Left'#2#0#6'Height'#3'J'#1#3'Top'#3#152#0#5'Widt'
-  +'h'#3#9#4#10'ActivePage'#7#7'tabYadd'#5'Align'#7#8'alClient'#8'TabIndex'#2#0
+  +'ontrol'#12'PageControl1'#4'Left'#2#0#6'Height'#3'~'#1#3'Top'#3#168#0#5'Widt'
+  +'h'#3#9#4#10'ActivePage'#7#7'tabLogs'#5'Align'#7#8'alClient'#8'TabIndex'#2#1
   +#8'TabOrder'#2#2#0#9'TTabSheet'#7'tabYadd'#7'Caption'#6#17'Receive from YADD'
-  +#12'ClientHeight'#3'*'#1#11'ClientWidth'#3#255#3#0#9'TRichMemo'#8'MemoText'#4
-  +'Left'#2#0#6'Height'#3'*'#1#3'Top'#2#0#5'Width'#3#255#3#5'Align'#7#8'alClien'
-  +'t'#11'Font.Height'#2#243#13'HideSelection'#8#10'ParentFont'#8#8'ReadOnly'#9
-  +#10'ScrollBars'#7#10'ssAutoBoth'#8'TabOrder'#2#0#10'ZoomFactor'#5#0#0#0#0#0#0
-  +#0#128#255'?'#0#0#0#9'TTabSheet'#7'tabLogs'#7'Caption'#6#4'Logs'#12'ClientHe'
-  +'ight'#3'*'#1#11'ClientWidth'#3#255#3#0#9'TRichMemo'#8'MemoLogs'#4'Left'#2#0
-  +#6'Height'#3'2'#1#3'Top'#2#0#5'Width'#3#214#2#5'Align'#7#8'alClient'#11'Font'
-  +'.Height'#2#243#13'HideSelection'#8#13'Lines.Strings'#1#6#8'MemoLogs'#0#10'P'
-  +'arentFont'#8#9'PopupMenu'#7#10'PopupMenu1'#10'ScrollBars'#7#10'ssAutoBoth'#8
-  +'TabOrder'#2#0#10'ZoomFactor'#5#0#0#0#0#0#0#0#128#255'?'#0#0#0#0#14'TLUDPCom'
-  +'ponent'#7'YaddUDP'#4'Port'#2#0#9'OnReceive'#7#20'LTCPComponentReceive'#7'On'
-  +'Error'#7#18'LTCPComponentError'#7'Timeout'#2#0#4'left'#3'('#2#3'top'#3#200#0
-  +#0#0#9'TMainMenu'#9'MainMenu1'#4'left'#3#224#1#3'top'#3#200#0#0#9'TMenuItem'
-  +#5'mFile'#7'Caption'#6#5'&File'#0#9'TMenuItem'#5'mExit'#7'Caption'#6#5'E&xit'
-  +#7'OnClick'#7#10'mExitClick'#0#0#0#9'TMenuItem'#9'mSettings'#7'Caption'#6#8
-  +'Settings'#0#9'TMenuItem'#11'mRxPosition'#7'Caption'#6#11'RX position'#7'OnC'
-  +'lick'#7#16'mRxPositionClick'#0#0#0#9'TMenuItem'#12'MenuItemHelp'#7'Caption'
-  ,#6#5'&Help'#0#9'TMenuItem'#13'MenuItemAbout'#7'Caption'#6#6'&About'#7'OnClic'
-  +'k'#7#18'MenuItemAboutClick'#0#0#0#0#6'TTimer'#9'TimerQuit'#7'Enabled'#8#8'I'
-  +'nterval'#3#200#0#7'OnTimer'#7#14'TimerQuitTimer'#4'left'#3#216#1#3'top'#3#8
-  +#1#0#0#14'TLUDPComponent'#9'RemoteUDP'#4'Port'#2#0#7'OnError'#7#18'LTCPCompo'
-  +'nentError'#7'Timeout'#2#0#4'left'#3'h'#2#3'top'#3'('#1#0#0#12'TZConnection'
-  +#11'sConnection'#16'ControlsCodePage'#7#8'cCP_UTF8'#17'AutoEncodeStrings'#8
-  +#18'Properties.Strings'#1#6#18'AutoEncodeStrings='#0#4'Port'#2#0#8'Protocol'
-  +#6#8'sqlite-3'#4'left'#2#24#3'top'#3#200#0#0#0#7'TZQuery'#6'sQuery'#10'Conne'
-  +'ction'#7#11'sConnection'#6'Params'#14#0#4'left'#2'P'#3'top'#3#200#0#0#0#7'T'
-  +'ZQuery'#8'mapQuery'#10'Connection'#7#11'sConnection'#6'Params'#14#0#4'left'
-  +#3#160#0#3'top'#3#200#0#0#0#6'TTimer'#9'TimerData'#8'Interval'#4#224#147#4#0
-  +#7'OnTimer'#7#14'TimerDataTimer'#4'left'#2'h'#3'top'#3#24#1#0#0#10'TPopupMen'
-  +'u'#10'PopupMenu1'#4'left'#3'w'#1#3'top'#3#210#0#0#9'TMenuItem'#12'mSaveLogB'
-  +'ook'#7'Caption'#6#4'Save'#7'OnClick'#7#17'mSaveLogBookClick'#0#0#0#24'TBroo'
-  +'kFCLEventLogHandler'#24'BrookFCLEventLogHandler1'#6'Active'#9#8'FileName'#6
-  +#3'log'#6'Output'#7#6'loFile'#5'Types'#11#8'ltCustom'#6'ltInfo'#9'ltWarning'
-  +#7'ltError'#7'ltDebug'#0#4'left'#3'p'#1#3'top'#3'0'#1#0#0#0
+  +#12'ClientHeight'#3'^'#1#11'ClientWidth'#3#255#3#0#6'TKMemo'#8'MemoText'#4'L'
+  +'eft'#2#0#6'Height'#3'*'#1#3'Top'#2#0#5'Width'#3#255#3#5'Align'#7#8'alClient'
+  +#19'ContentPadding.Left'#2#5#18'ContentPadding.Top'#2#5#20'ContentPadding.Ri'
+  +'ght'#2#5#21'ContentPadding.Bottom'#2#5#11'Font.Height'#2#243#10'ParentFont'
+  +#8#8'ReadOnly'#9#10'ScrollBars'#7#10'ssAutoBoth'#8'TabOrder'#2#0#7'Visible'#9
+  +#0#0#0#9'TTabSheet'#7'tabLogs'#7'Caption'#6#4'Logs'#12'ClientHeight'#3'^'#1
+  +#11'ClientWidth'#3#255#3#0#6'TKMemo'#8'memoLogs'#4'Left'#2#0#6'Height'#3'^'#1
+  +#3'Top'#2#0#5'Width'#3#255#3#5'Align'#7#8'alClient'#19'ContentPadding.Left'#2
+  +#5#18'ContentPadding.Top'#2#5#20'ContentPadding.Right'#2#5#21'ContentPadding'
+  +'.Bottom'#2#5#10'ParentFont'#8#8'ReadOnly'#9#8'TabOrder'#2#0#7'Visible'#9#0#0
+  +#0#0#14'TLUDPComponent'#7'YaddUDP'#4'Port'#2#0#9'OnReceive'#7#20'LTCPCompone'
+  +'ntReceive'#7'OnError'#7#18'LTCPComponentError'#7'Timeout'#2#0#4'left'#3'('#2
+  +#3'top'#3#200#0#0#0#9'TMainMenu'#9'MainMenu1'#4'left'#3#224#1#3'top'#3#200#0
+  +#0#9'TMenuItem'#5'mFile'#7'Caption'#6#5'&File'#0#9'TMenuItem'#5'mExit'#7'Cap'
+  +'tion'#6#5'E&xit'#7'OnClick'#7#10'mExitClick'#0#0#0#9'TMenuItem'#9'mSettings'
+  +#7'Caption'#6#8'Settings'#0#9'TMenuItem'#11'mRxPosition'#7'Caption'#6#11'RX '
+  +'position'#7'OnClick'#7#16'mRxPositionClick'#0#0#0#9'TMenuItem'#12'MenuItemH'
+  ,'elp'#7'Caption'#6#5'&Help'#0#9'TMenuItem'#13'MenuItemAbout'#7'Caption'#6#6
+  +'&About'#7'OnClick'#7#18'MenuItemAboutClick'#0#0#0#0#6'TTimer'#9'TimerQuit'#7
+  +'Enabled'#8#8'Interval'#3#200#0#7'OnTimer'#7#14'TimerQuitTimer'#4'left'#3#216
+  +#1#3'top'#3#8#1#0#0#14'TLUDPComponent'#9'RemoteUDP'#4'Port'#2#0#7'OnError'#7
+  +#18'LTCPComponentError'#7'Timeout'#2#0#4'left'#3'h'#2#3'top'#3'('#1#0#0#12'T'
+  +'ZConnection'#11'sConnection'#16'ControlsCodePage'#7#8'cCP_UTF8'#17'AutoEnco'
+  +'deStrings'#8#18'Properties.Strings'#1#6#18'AutoEncodeStrings='#0#4'Port'#2#0
+  +#8'Protocol'#6#8'sqlite-3'#4'left'#2#24#3'top'#3#200#0#0#0#7'TZQuery'#6'sQue'
+  +'ry'#10'Connection'#7#11'sConnection'#6'Params'#14#0#4'left'#2'P'#3'top'#3
+  +#200#0#0#0#7'TZQuery'#8'mapQuery'#10'Connection'#7#11'sConnection'#6'Params'
+  +#14#0#4'left'#3#160#0#3'top'#3#200#0#0#0#6'TTimer'#9'TimerData'#8'Interval'#4
+  +#224#147#4#0#7'OnTimer'#7#14'TimerDataTimer'#4'left'#2'h'#3'top'#3#24#1#0#0
+  +#10'TPopupMenu'#10'PopupMenu1'#4'left'#3'w'#1#3'top'#3#210#0#0#9'TMenuItem'
+  +#12'mSaveLogBook'#7'Caption'#6#4'Save'#7'OnClick'#7#17'mSaveLogBookClick'#0#0
+  +#0#24'TBrookFCLEventLogHandler'#24'BrookFCLEventLogHandler1'#6'Active'#9#8'F'
+  +'ileName'#6#3'log'#6'Output'#7#6'loFile'#5'Types'#11#8'ltCustom'#6'ltInfo'#9
+  +'ltWarning'#7'ltError'#7'ltDebug'#0#4'left'#3'p'#1#3'top'#3'0'#1#0#0#0
 ]);

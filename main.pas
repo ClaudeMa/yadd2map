@@ -6,9 +6,9 @@ interface
 
 uses
   Classes, SysUtils, simpleipc, sqlite3conn, sqldb, LResources, Forms, Controls,
-  Graphics, Dialogs, StdCtrls, DateUtils, Buttons, lNetComponents,
-  lNet, ExtCtrls, Menus, GeoJson, ComCtrls, EditBtn, ZConnection, ZDataset,
-  RichMemo, JLabeledIntegerEdit, strutils, xquery, simpleinternet, fpHTTP,
+  Graphics, Dialogs, StdCtrls, DateUtils, Buttons, lNetComponents, lNet,
+  ExtCtrls, Menus, GeoJson, ComCtrls, EditBtn, ZConnection, ZDataset, RichMemo,
+  kmemo, JLabeledIntegerEdit, strutils, xquery, simpleinternet, fpHTTP,
   RxPosition, BrookFCLEventLogHandler, process, lclIntf,
   {$IFDEF WINDOWS}
           shellApi, w32internetaccess;
@@ -78,8 +78,8 @@ type
     Label5: TLabel;
     lblUrl: TLabel;
     lable3: TLabel;
-    MemoLogs: TRichMemo;
-    MemoText: TRichMemo;
+    memoLogs: TKMemo;
+    MemoText: TKMemo;
     mSaveLogBook: TMenuItem;
     mSettings: TMenuItem;
     mRxPosition: TMenuItem;
@@ -142,7 +142,7 @@ type
     function genGeoJson: integer;
     function GetCoastInfo(AMmsi: string): TCoast;
     function GetIpAddrList(): string;
-    procedure appendText(AMemo: TRichMemo; AStr: string; AColor: TColor = clBlack);
+    procedure appendText(AMemo: TKmemo; AStr: string; AColor: TColor = clBlack);
     procedure XOpen(FileName:String);
   public
   end;
@@ -213,12 +213,12 @@ begin
        btnUrl.Enabled:= true;
        BrookThread.Start(StrToInt(eHttpPort.Text));
        Webled.Brush.Color := clGreen;
-       appendtext(MemoLogs,'Web server started on port ' + eHttpPort.Text, SHIP_COLOR);
+       appendtext(MemoLogs,FormatDateTime('hh:nn', now) + ': Web server started on port ' + eHttpPort.Text, SHIP_COLOR);
      end
      else
      begin
         btnUrl.Enabled := false;
-       lblUrl.Caption:= 'URL : ???';
+        lblUrl.Caption:= 'URL : ???';
         BrookThread.Stop;
         WebLed.Brush.Color := clRed;
         appendtext(MemoLogs,'Web server stopped', ERROR_COLOR);
@@ -408,7 +408,6 @@ end;
 procedure TFormMain.FormShow(Sender: TObject);
 begin
   MemoText.Clear;
-  MemoLogs.GetTextAttributes(0, FFnt);
   MemoLogs.Clear;
   try
     sConnection.Database := GetCurrentDir + '/db/logbook.db';
@@ -486,22 +485,20 @@ begin
   except
     On e: Exception do
     begin
-      memoLogs.Append(FormatDateTime('hh:nn', now) + ': ' + e.Message);
+      appendText(memoLogs, FormatDateTime('hh:nn', now) + ': ' + e.Message, clRed);
       Result := 'UNKNOW';
     end;
   end;
 end;
 
-procedure TFormMain.appendText(AMemo: TRichMemo; AStr: string;
+procedure TFormMain.appendText(AMemo: TKMemo; AStr: string;
   AColor: TColor = clBlack);
+var
+  textBlock: TKMemoTextBlock;
 begin
-  FFnt.Color := AColor;
-  with AMemo do
-  begin
-    Lines.Add(AStr);
-    SelStart := Length(Lines.Text);
-    SetTextAttributes(selstart - Length(AStr) - 1, selstart, FFnt);
-  end;
+  textBlock := AMemo.Blocks.AddTextBlock(Astr);
+  AMemo.Blocks.AddParagraph;
+  textBlock.TextStyle.Font.Color := Acolor;
 end;
 
 function TFormMain.SaveLogRecord(LogRecord: TYAddUDPRecord): boolean;
