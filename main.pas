@@ -6,15 +6,15 @@ interface
 
 uses
   Classes, SysUtils, simpleipc, sqlite3conn, sqldb, LResources, Forms, Controls,
-  shellApi, Graphics, Dialogs, StdCtrls, DateUtils, Buttons, lNetComponents,
+  Graphics, Dialogs, StdCtrls, DateUtils, Buttons, lNetComponents,
   lNet, ExtCtrls, Menus, GeoJson, ComCtrls, EditBtn, ZConnection, ZDataset,
   RichMemo, JLabeledIntegerEdit, strutils, xquery, simpleinternet, fpHTTP,
   RxPosition, BrookFCLEventLogHandler, process, lclIntf,
-  //{$IFDEF WINDOWS}
-  w32internetaccess;
-//{$ELSE}
-// synapseinternetaccess;
-//{$ENDIF}
+  {$IFDEF WINDOWS}
+          shellApi, w32internetaccess;
+  {$ELSE}
+     synapseinternetaccess;
+  {$ENDIF}
 
 type
 
@@ -143,6 +143,7 @@ type
     function GetCoastInfo(AMmsi: string): TCoast;
     function GetIpAddrList(): string;
     procedure appendText(AMemo: TRichMemo; AStr: string; AColor: TColor = clBlack);
+    procedure XOpen(FileName:String);
   public
   end;
 
@@ -203,7 +204,11 @@ procedure TFormMain.cbWebServerChange(Sender: TObject);
 begin
      if cbWebServer.Checked then
      begin
-       Weburl := 'http://' + trim(GetIpAddrList) + ':' + trim(eHttpPort.Text) + '/map';
+       {$IFDEF WINDOWS}
+              Weburl := 'http://' + trim(GetIpAddrList) + ':' + trim(eHttpPort.Text) + '/map';
+       {$ELSE}
+              WebUrl := 'http://localhost:' + trim(eHttpPort.Text) + '/map';
+       {$ENDIF}
        lblUrl.Caption:= 'URL : ' + weburl;
        btnUrl.Enabled:= true;
        BrookThread.Start(StrToInt(eHttpPort.Text));
@@ -242,8 +247,7 @@ begin
       timerData.Enabled := True;
     if MessageDlg('Question', 'Open new web brownser?', mtConfirmation,
       [mbYes, mbNo], 0) = mrYes then
-      ShellExecute(self.Handle, PChar('open'), PChar('map\map.html'),
-        PChar(''), PChar(''), 1);
+      XOpen('map/map.html');
   end
   else
     ShowMessage('Nothing to show on map today');
@@ -725,6 +729,21 @@ begin
   end;
   {$ENDIF}
   sl.Free();
+end;
+
+procedure TFormMain.XOpen(FileName:String);
+{$IFDEF UNIX}
+var prc:TProcess;
+begin
+ prc:=TProcess.Create(nil);
+ prc.CommandLine:='xdg-open ' + FileName;
+ prc.Execute;
+ prc.free;
+ {$ENDIF}
+ {$IFDEF WINDOWS}
+  ShellExecute(self.Handle, PChar('open'), PChar(Filename),
+        PChar(''), PChar(''), 1);
+ {$ENDIF}
 end;
 
 initialization

@@ -1,22 +1,23 @@
 object FormMain: TFormMain
-  Left = 410
+  Left = 462
   Height = 563
-  Top = 148
+  Top = 120
   Width = 1033
   Caption = 'Yadd To Map'
-  ClientHeight = 543
+  ClientHeight = 537
   ClientWidth = 1033
+  DesignTimePPI = 98
   Menu = MainMenu1
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '1.8.2.0'
+  LCLVersion = '2.0.0.4'
   Scaled = False
   object panelBottom: TPanel
     Left = 0
     Height = 55
-    Top = 488
+    Top = 482
     Width = 1033
     Align = alBottom
     ClientHeight = 55
@@ -33,9 +34,9 @@ object FormMain: TFormMain
     end
     object cbYadd: TCheckBox
       Left = 40
-      Height = 19
+      Height = 23
       Top = 10
-      Width = 123
+      Width = 135
       Caption = 'Receive from YADD'
       OnChange = cbYaddChange
       TabOrder = 1
@@ -56,9 +57,9 @@ object FormMain: TFormMain
     end
     object cbRemoteLogging: TCheckBox
       Left = 224
-      Height = 19
+      Height = 23
       Top = 11
-      Width = 140
+      Width = 158
       Caption = 'Enable remote logging'
       OnChange = cbRemoteLoggingChange
       TabOrder = 2
@@ -127,9 +128,9 @@ object FormMain: TFormMain
     end
     object cbWebServer: TCheckBox
       Left = 424
-      Height = 19
+      Height = 23
       Top = 11
-      Width = 114
+      Width = 133
       Caption = 'Enable web server'
       OnChange = cbWebServerChange
       TabOrder = 5
@@ -155,15 +156,15 @@ object FormMain: TFormMain
       TabOrder = 0
       object LabelPort: TLabel
         Left = 16
-        Height = 15
+        Height = 18
         Top = 8
-        Width = 109
+        Width = 118
         Caption = 'Listening YADD port:'
         ParentColor = False
       end
       object EditPort: TEdit
         Left = 16
-        Height = 23
+        Height = 30
         Top = 32
         Width = 136
         TabOrder = 0
@@ -171,15 +172,15 @@ object FormMain: TFormMain
       end
       object Label1: TLabel
         Left = 16
-        Height = 15
+        Height = 18
         Top = 120
-        Width = 96
+        Width = 107
         Caption = 'Message received:'
         ParentColor = False
       end
       object editReceived: TEdit
         Left = 128
-        Height = 23
+        Height = 30
         Top = 120
         Width = 64
         Alignment = taRightJustify
@@ -198,15 +199,15 @@ object FormMain: TFormMain
       TabOrder = 1
       object Label3: TLabel
         Left = 10
-        Height = 15
+        Height = 18
         Top = 8
-        Width = 180
+        Width = 194
         Caption = 'Hostname or Ip of Remote Logger'
         ParentColor = False
       end
       object editRemotehost: TEdit
         Left = 10
-        Height = 23
+        Height = 30
         Top = 32
         Width = 184
         TabOrder = 0
@@ -214,15 +215,15 @@ object FormMain: TFormMain
       end
       object Label2: TLabel
         Left = 10
-        Height = 15
+        Height = 18
         Top = 64
-        Width = 69
+        Width = 74
         Caption = 'Port Number'
         ParentColor = False
       end
       object editRemotePort: TEdit
         Left = 10
-        Height = 23
+        Height = 30
         Top = 80
         Width = 80
         TabOrder = 1
@@ -230,15 +231,15 @@ object FormMain: TFormMain
       end
       object lable3: TLabel
         Left = 10
-        Height = 15
+        Height = 18
         Top = 120
-        Width = 74
+        Width = 83
         Caption = 'Message sent:'
         ParentColor = False
       end
       object EditSent: TEdit
         Left = 96
-        Height = 23
+        Height = 30
         Top = 120
         Width = 80
         Alignment = taRightJustify
@@ -257,15 +258,15 @@ object FormMain: TFormMain
       TabOrder = 2
       object Label5: TLabel
         Left = 10
-        Height = 15
+        Height = 18
         Top = 64
-        Width = 30
+        Width = 33
         Caption = 'Date :'
         ParentColor = False
       end
       object eDateHeard: TDateEdit
         Left = 8
-        Height = 23
+        Height = 30
         Top = 80
         Width = 103
         CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
@@ -280,18 +281,18 @@ object FormMain: TFormMain
       end
       object Label4: TLabel
         Left = 10
-        Height = 15
+        Height = 18
         Top = 8
-        Width = 105
+        Width = 116
         Caption = 'Display MMSI heard'
         ParentColor = False
       end
       object cbHeard: TComboBox
         Left = 10
-        Height = 23
+        Height = 28
         Top = 24
         Width = 105
-        ItemHeight = 15
+        ItemHeight = 0
         ItemIndex = 1
         Items.Strings = (
           'last hour'
@@ -351,19 +352,13 @@ object FormMain: TFormMain
       end
       object eHttpPort: TJLabeledIntegerEdit
         Left = 176
-        Height = 23
+        Height = 30
         Top = 24
         Width = 96
         DisplayFormat = '0'
         Value = 8000
         NegativeColor = clDefault
-        EditLabel.AnchorSideLeft.Control = eHttpPort
-        EditLabel.AnchorSideRight.Control = eHttpPort
-        EditLabel.AnchorSideRight.Side = asrBottom
-        EditLabel.AnchorSideBottom.Control = eHttpPort
-        EditLabel.Left = 176
-        EditLabel.Height = 15
-        EditLabel.Top = 6
+        EditLabel.Height = 18
         EditLabel.Width = 96
         EditLabel.Caption = 'HTTP port'
         EditLabel.ParentColor = False
@@ -381,9 +376,9 @@ object FormMain: TFormMain
       end
       object lblUrl: TLabel
         Left = 176
-        Height = 15
+        Height = 18
         Top = 88
-        Width = 45
+        Width = 47
         Caption = 'URL : ???'
         ParentColor = False
       end
@@ -391,7 +386,7 @@ object FormMain: TFormMain
   end
   object PageControl1: TPageControl
     Left = 0
-    Height = 336
+    Height = 330
     Top = 152
     Width = 1033
     ActivePage = tabYadd
@@ -400,13 +395,13 @@ object FormMain: TFormMain
     TabOrder = 2
     object tabYadd: TTabSheet
       Caption = 'Receive from YADD'
-      ClientHeight = 308
-      ClientWidth = 1025
+      ClientHeight = 298
+      ClientWidth = 1023
       object MemoText: TRichMemo
         Left = 0
-        Height = 308
+        Height = 298
         Top = 0
-        Width = 1025
+        Width = 1023
         Align = alClient
         Font.Height = -13
         HideSelection = False
@@ -419,8 +414,8 @@ object FormMain: TFormMain
     end
     object tabLogs: TTabSheet
       Caption = 'Logs'
-      ClientHeight = 306
-      ClientWidth = 726
+      ClientHeight = 298
+      ClientWidth = 1023
       object MemoLogs: TRichMemo
         Left = 0
         Height = 306
