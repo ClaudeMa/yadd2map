@@ -1,0 +1,97 @@
+object FAprsfi: TFAprsfi
+  Left = 367
+  Height = 263
+  Top = 323
+  Width = 476
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
+  Caption = 'APRS.FI API key'
+  ClientHeight = 263
+  ClientWidth = 476
+  OnCreate = FormCreate
+  Position = poMainFormCenter
+  LCLVersion = '2.2.0.4'
+  object Memo1: TMemo
+    Left = 8
+    Height = 80
+    Top = 8
+    Width = 462
+    Alignment = taCenter
+    Lines.Strings = (
+      'Ship Names are automatically resolved via the APRS.FI web API'
+      'http://aprs.fi'
+      'To get these datas , you must use a personal key named "API key"  '
+      'You can get your api key after a  free registration on aprs.fi'
+    )
+    TabOrder = 0
+  end
+  object Label1: TLabel
+    Left = 78
+    Height = 15
+    Top = 96
+    Width = 44
+    Caption = 'API KEY:'
+  end
+  object eApiKey: TEdit
+    Left = 142
+    Height = 23
+    Top = 96
+    Width = 256
+    TabOrder = 1
+  end
+  object Button1: TButton
+    Left = 125
+    Height = 25
+    Top = 136
+    Width = 227
+    Caption = 'Get my API KEY'
+    OnClick = Button1Click
+    TabOrder = 2
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 50
+    Top = 213
+    Width = 476
+    Align = alBottom
+    ClientHeight = 50
+    ClientWidth = 476
+    TabOrder = 3
+    object btnOk: TBitBtn
+      Left = 296
+      Height = 30
+      Top = 8
+      Width = 75
+      Default = True
+      DefaultCaption = True
+      Kind = bkOK
+      OnClick = btnOkClick
+      TabOrder = 0
+    end
+    object btnCancel: TBitBtn
+      Left = 384
+      Height = 30
+      Top = 8
+      Width = 75
+      Cancel = True
+      DefaultCaption = True
+      Kind = bkCancel
+      OnClick = btnCancelClick
+      TabOrder = 1
+    end
+  end
+  object Label2: TLabel
+    Left = 176
+    Height = 21
+    Top = 184
+    Width = 124
+    Alignment = taCenter
+    AutoSize = False
+    Caption = 'https://aprs.fi'
+    Font.Color = clBlue
+    Font.Height = -16
+    Font.Style = [fsUnderline]
+    ParentFont = False
+    OnClick = Label2Click
+  end
+end
