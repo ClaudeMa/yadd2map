@@ -1,26 +1,25 @@
 object FormMain: TFormMain
-  Left = 318
+  Left = 346
   Height = 631
-  Top = 202
+  Top = 212
   Width = 1033
   Caption = 'Yadd To Map'
-  ClientHeight = 605
+  ClientHeight = 611
   ClientWidth = 1033
-  DesignTimePPI = 98
   Menu = MainMenu1
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '2.0.0.4'
+  LCLVersion = '2.2.0.4'
   Scaled = False
   object panelBottom: TPanel
     Left = 0
-    Height = 55
-    Top = 550
+    Height = 59
+    Top = 552
     Width = 1033
     Align = alBottom
-    ClientHeight = 55
+    ClientHeight = 59
     ClientWidth = 1033
     TabOrder = 0
     object ButtonConnect: TButton
@@ -34,9 +33,9 @@ object FormMain: TFormMain
     end
     object cbYadd: TCheckBox
       Left = 40
-      Height = 23
+      Height = 19
       Top = 10
-      Width = 135
+      Width = 123
       Caption = 'Receive from YADD'
       OnChange = cbYaddChange
       TabOrder = 1
@@ -57,9 +56,9 @@ object FormMain: TFormMain
     end
     object cbRemoteLogging: TCheckBox
       Left = 224
-      Height = 23
+      Height = 19
       Top = 11
-      Width = 158
+      Width = 140
       Caption = 'Enable remote logging'
       OnChange = cbRemoteLoggingChange
       TabOrder = 2
@@ -67,16 +66,16 @@ object FormMain: TFormMain
     object ProgressBar1: TProgressBar
       Left = 1
       Height = 10
-      Top = 44
+      Top = 48
       Width = 1031
       Align = alBottom
       Step = 1
       TabOrder = 3
     end
     object btnClose: TBitBtn
-      Left = 624
+      Left = 904
       Height = 33
-      Top = 2
+      Top = 8
       Width = 96
       BorderSpacing.InnerBorder = 4
       Caption = 'Exit'
@@ -128,9 +127,9 @@ object FormMain: TFormMain
     end
     object cbWebServer: TCheckBox
       Left = 424
-      Height = 23
+      Height = 19
       Top = 11
-      Width = 133
+      Width = 114
       Caption = 'Enable web server'
       OnChange = cbWebServerChange
       TabOrder = 5
@@ -156,15 +155,14 @@ object FormMain: TFormMain
       TabOrder = 0
       object LabelPort: TLabel
         Left = 16
-        Height = 18
+        Height = 15
         Top = 8
-        Width = 118
+        Width = 109
         Caption = 'Listening YADD port:'
-        ParentColor = False
       end
       object EditPort: TEdit
         Left = 16
-        Height = 30
+        Height = 23
         Top = 32
         Width = 136
         TabOrder = 0
@@ -172,15 +170,14 @@ object FormMain: TFormMain
       end
       object Label1: TLabel
         Left = 16
-        Height = 18
+        Height = 15
         Top = 120
-        Width = 107
+        Width = 96
         Caption = 'Message received:'
-        ParentColor = False
       end
       object editReceived: TEdit
         Left = 128
-        Height = 30
+        Height = 23
         Top = 120
         Width = 64
         Alignment = taRightJustify
@@ -199,31 +196,29 @@ object FormMain: TFormMain
       TabOrder = 1
       object Label3: TLabel
         Left = 10
-        Height = 18
+        Height = 15
         Top = 8
-        Width = 194
+        Width = 180
         Caption = 'Hostname or Ip of Remote Logger'
-        ParentColor = False
       end
       object editRemotehost: TEdit
         Left = 10
-        Height = 30
+        Height = 23
         Top = 32
         Width = 184
         TabOrder = 0
-        Text = 'GM4SLV.PLUS.COM'
+        Text = 'www.yaddnet.org'
       end
       object Label2: TLabel
         Left = 10
-        Height = 18
+        Height = 15
         Top = 64
-        Width = 74
+        Width = 69
         Caption = 'Port Number'
-        ParentColor = False
       end
       object editRemotePort: TEdit
         Left = 10
-        Height = 30
+        Height = 23
         Top = 80
         Width = 80
         TabOrder = 1
@@ -231,15 +226,14 @@ object FormMain: TFormMain
       end
       object lable3: TLabel
         Left = 10
-        Height = 18
+        Height = 15
         Top = 120
-        Width = 83
+        Width = 74
         Caption = 'Message sent:'
-        ParentColor = False
       end
       object EditSent: TEdit
         Left = 96
-        Height = 30
+        Height = 23
         Top = 120
         Width = 80
         Alignment = taRightJustify
@@ -258,15 +252,14 @@ object FormMain: TFormMain
       TabOrder = 2
       object Label5: TLabel
         Left = 10
-        Height = 18
+        Height = 15
         Top = 64
-        Width = 33
+        Width = 30
         Caption = 'Date :'
-        ParentColor = False
       end
       object eDateHeard: TDateEdit
         Left = 8
-        Height = 30
+        Height = 23
         Top = 80
         Width = 103
         CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
@@ -281,18 +274,17 @@ object FormMain: TFormMain
       end
       object Label4: TLabel
         Left = 10
-        Height = 18
+        Height = 15
         Top = 8
-        Width = 116
+        Width = 105
         Caption = 'Display MMSI heard'
-        ParentColor = False
       end
       object cbHeard: TComboBox
         Left = 10
-        Height = 28
+        Height = 23
         Top = 24
         Width = 105
-        ItemHeight = 0
+        ItemHeight = 15
         ItemIndex = 1
         Items.Strings = (
           'last hour'
@@ -352,16 +344,15 @@ object FormMain: TFormMain
       end
       object eHttpPort: TJLabeledIntegerEdit
         Left = 176
-        Height = 30
+        Height = 23
         Top = 24
         Width = 96
         DisplayFormat = '0'
         Value = 8000
         NegativeColor = clDefault
-        EditLabel.Height = 18
+        EditLabel.Height = 15
         EditLabel.Width = 96
         EditLabel.Caption = 'HTTP port'
-        EditLabel.ParentColor = False
         TabOrder = 3
       end
       object btnUrl: TButton
@@ -376,17 +367,16 @@ object FormMain: TFormMain
       end
       object lblUrl: TLabel
         Left = 176
-        Height = 18
+        Height = 15
         Top = 88
-        Width = 47
+        Width = 45
         Caption = 'URL : ???'
-        ParentColor = False
       end
     end
   end
   object PageControl1: TPageControl
     Left = 0
-    Height = 382
+    Height = 384
     Top = 168
     Width = 1033
     ActivePage = tabLogs
@@ -395,14 +385,15 @@ object FormMain: TFormMain
     TabOrder = 2
     object tabYadd: TTabSheet
       Caption = 'Receive from YADD'
-      ClientHeight = 350
-      ClientWidth = 1023
+      ClientHeight = 356
+      ClientWidth = 1025
       object MemoText: TKMemo
         Left = 0
-        Height = 298
+        Height = 356
         Top = 0
-        Width = 1023
+        Width = 1025
         Align = alClient
+        Background.Color = clDefault
         ContentPadding.Left = 5
         ContentPadding.Top = 5
         ContentPadding.Right = 5
@@ -410,27 +401,29 @@ object FormMain: TFormMain
         Font.Height = -13
         ParentFont = False
         ReadOnly = True
-        ScrollBars = ssAutoBoth
         TabOrder = 0
         Visible = True
+        OnChange = MemoTextChange
       end
     end
     object tabLogs: TTabSheet
       Caption = 'Logs'
-      ClientHeight = 350
-      ClientWidth = 1023
+      ClientHeight = 356
+      ClientWidth = 1025
       object memoLogs: TKMemo
         Left = 0
-        Height = 350
+        Height = 356
         Top = 0
-        Width = 1023
+        Width = 1025
         Align = alClient
+        Background.Color = clDefault
         ContentPadding.Left = 5
         ContentPadding.Top = 5
         ContentPadding.Right = 5
         ContentPadding.Bottom = 5
         ParentFont = False
         ReadOnly = True
+        ScrollBars = ssAutoBoth
         TabOrder = 0
         Visible = True
       end
@@ -441,12 +434,12 @@ object FormMain: TFormMain
     OnReceive = LTCPComponentReceive
     OnError = LTCPComponentError
     Timeout = 0
-    left = 552
-    top = 200
+    Left = 552
+    Top = 200
   end
   object MainMenu1: TMainMenu
-    left = 480
-    top = 200
+    Left = 480
+    Top = 200
     object mFile: TMenuItem
       Caption = '&File'
       object mExit: TMenuItem
@@ -459,6 +452,10 @@ object FormMain: TFormMain
       object mRxPosition: TMenuItem
         Caption = 'RX position'
         OnClick = mRxPositionClick
+      end
+      object mAprsFi: TMenuItem
+        Caption = 'Aprs.fi api key'
+        OnClick = mAprsFiClick
       end
     end
     object MenuItemHelp: TMenuItem
@@ -473,48 +470,48 @@ object FormMain: TFormMain
     Enabled = False
     Interval = 200
     OnTimer = TimerQuitTimer
-    left = 472
-    top = 264
+    Left = 472
+    Top = 264
   end
   object RemoteUDP: TLUDPComponent
     Port = 0
     OnError = LTCPComponentError
     Timeout = 0
-    left = 616
-    top = 296
+    Left = 616
+    Top = 296
   end
   object sConnection: TZConnection
     ControlsCodePage = cCP_UTF8
-    AutoEncodeStrings = False
+    AutoEncodeStrings = True
     Properties.Strings = (
       'AutoEncodeStrings='
     )
     Port = 0
     Protocol = 'sqlite-3'
-    left = 24
-    top = 200
+    Left = 24
+    Top = 392
   end
   object sQuery: TZQuery
     Connection = sConnection
     Params = <>
-    left = 80
-    top = 200
+    Left = 80
+    Top = 392
   end
   object mapQuery: TZQuery
     Connection = sConnection
     Params = <>
-    left = 160
-    top = 200
+    Left = 152
+    Top = 392
   end
   object TimerData: TTimer
     Interval = 300000
     OnTimer = TimerDataTimer
-    left = 104
-    top = 280
+    Left = 144
+    Top = 280
   end
   object PopupMenu1: TPopupMenu
-    left = 375
-    top = 210
+    Left = 375
+    Top = 210
     object mSaveLogBook: TMenuItem
       Caption = 'Save'
       OnClick = mSaveLogBookClick
@@ -525,7 +522,7 @@ object FormMain: TFormMain
     FileName = 'log'
     Output = loFile
     Types = [ltCustom, ltInfo, ltWarning, ltError, ltDebug]
-    left = 368
-    top = 304
+    Left = 368
+    Top = 304
   end
 end

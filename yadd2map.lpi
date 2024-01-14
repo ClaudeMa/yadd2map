@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="10"/>
+    <Version Value="12"/>
     <General>
       <Flags>
         <LRSInOutputDirectory Value="False"/>
+        <CompatibilityMode Value="True"/>
       </Flags>
       <SessionStorage Value="InProjectDir"/>
-      <MainUnit Value="0"/>
       <Title Value="Yadd2Map"/>
       <Icon Value="0"/>
     </General>
@@ -37,6 +37,7 @@
           <Linking>
             <Debugging>
               <GenerateDebugInfo Value="False"/>
+              <DebugInfoType Value="dsDwarf2Set"/>
               <UseLineInfoUnit Value="False"/>
               <StripSymbols Value="True"/>
             </Debugging>
@@ -52,18 +53,23 @@
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
-      <IncludeFileFilter Value="*.(pas|pp|inc|lfm|lpr|lrs|lpi|lpk|sh|xml)"/>
-      <ExcludeFileFilter Value="*.(bak|ppu|ppw|o|so);*~;backup"/>
     </PublishOptions>
     <RunParams>
       <local>
-        <FormatVersion Value="1"/>
-        <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+        <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T &apos;Lazarus Run Output&apos; -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
       </local>
+      <FormatVersion Value="2"/>
+      <Modes Count="1">
+        <Mode0 Name="default">
+          <local>
+            <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T &apos;Lazarus Run Output&apos; -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+          </local>
+        </Mode0>
+      </Modes>
     </RunParams>
-    <RequiredPackages Count="12">
+    <RequiredPackages Count="10">
       <Item1>
-        <PackageName Value="internettools_autoupdate"/>
+        <PackageName Value="KControlsLaz"/>
       </Item1>
       <Item2>
         <PackageName Value="BrookDT"/>
@@ -75,32 +81,26 @@
         <PackageName Value="jujiboutils"/>
       </Item4>
       <Item5>
-        <PackageName Value="internettools"/>
+        <PackageName Value="zcomponent"/>
       </Item5>
       <Item6>
-        <PackageName Value="zcomponent"/>
+        <PackageName Value="LazControls"/>
       </Item6>
       <Item7>
-        <PackageName Value="richmemopackage"/>
+        <PackageName Value="FCL"/>
       </Item7>
       <Item8>
-        <PackageName Value="LazControls"/>
+        <PackageName Value="LCL"/>
       </Item8>
       <Item9>
-        <PackageName Value="FCL"/>
+        <PackageName Value="lnetbase"/>
       </Item9>
       <Item10>
-        <PackageName Value="LCL"/>
-      </Item10>
-      <Item11>
-        <PackageName Value="lnetbase"/>
-      </Item11>
-      <Item12>
         <PackageName Value="lnetvisual"/>
         <MinVersion Minor="4" Release="1" Valid="True"/>
-      </Item12>
+      </Item10>
     </RequiredPackages>
-    <Units Count="6">
+    <Units Count="8">
       <Unit0>
         <Filename Value="yadd2map.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -133,6 +133,20 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ActionMap"/>
       </Unit5>
+      <Unit6>
+        <Filename Value="aprsfi.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FAprsfi"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="about.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FAbout"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit7>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -172,10 +186,13 @@
     </Linking>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="1">
+    <Exceptions Count="2">
       <Item1>
         <Name Value="EInternetException"/>
       </Item1>
+      <Item2>
+        <Name Value="Exception"/>
+      </Item2>
     </Exceptions>
   </Debugging>
 </CONFIG>

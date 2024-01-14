@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Yadd To Map"
-#define MyAppVersion "1.1"
+#define MyAppVersion "1.2"
 #define MyAppPublisher "F5065SWL"
 #define MyAppExeName "yadd2map.exe"
 #define CreationDate GetDateTimeString('ddmmyy', '-', ':');
@@ -22,6 +22,7 @@ LicenseFile=..\COPYING
 OutputBaseFilename=setup_Yadd2Map_{#CreationDate}
 Compression=lzma
 SolidCompression=yes
+DisableDirPage=no
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -32,9 +33,9 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "..\yadd2map.exe"; DestDir: "{pf}\yadd2map"; Flags: ignoreversion
-Source: "..\db\logbook.db"; DestDir: "{pf}\yadd2map\db"; Flags: ignoreversion onlyifdoesntexist uninsneveruninstall; Permissions: authusers-full
+Source: "..\db\logbook.db.orig"; DestDir: "{userappdata}\yadd2map\"; DestName: "logbook.db"; Flags: ignoreversion onlyifdoesntexist uninsneveruninstall confirmoverwrite; Permissions: everyone-full
 Source: "..\manual\doc_fr.pdf"; DestDir: "{pf}\yadd2map\manual"; Flags: ignoreversion
-Source: "..\..\sqlite3.dll"; DestDir: "{pf}\yadd2map"
+Source: "..\sqlite3.dll"; DestDir: "{pf}\yadd2map"
 Source: "..\COPYING"; DestDir: "{pf}\yadd2map"; Flags: ignoreversion
 Source: "..\CREDITS"; DestDir: "{pf}\yadd2map"; Flags: ignoreversion
 Source: "..\map\favicon.png"; DestDir: "{pf}\yadd2map\map"
@@ -51,6 +52,8 @@ Source: "..\map\js\leaflet.label.css"; DestDir: "{pf}\yadd2map\map\js"; Flags: i
 Source: "..\map\js\leaflet.label.js"; DestDir: "{pf}\yadd2map\map\js"; Flags: ignoreversion
 Source: "..\map\js\yadd2map.js"; DestDir: "{pf}\yadd2map\map\js"; Flags: ignoreversion
 Source: "..\map\data\home.json"; DestDir: "{pf}\yadd2map\map\data"; Permissions: authusers-full
+Source: "..\libs\libeay32.dll"; DestDir: "{pf}\yadd2map"
+Source: "..\libs\ssleay32.dll"; DestDir: "{pf}\yadd2map"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{pf}\yadd2map\yadd2map.exe"

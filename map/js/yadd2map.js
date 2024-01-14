@@ -106,7 +106,10 @@
             map.addLayer(rxcoasts)
         });
 		$("#monitor").click(function() {
-           window.open("http://gm4slv.plus.com:8000/index.php");
+           window.open("http://www.yaddnet.org:8000/index.php");
+        });
+		$("#aprs").click(function() {
+           window.open("http://www.aprs.fi");
         });
     });
 	

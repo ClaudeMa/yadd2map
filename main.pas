@@ -7,11 +7,12 @@ interface
 uses
   Classes, SysUtils, simpleipc, sqlite3conn, sqldb, LResources, Forms, Controls,
   Graphics, Dialogs, StdCtrls, DateUtils, Buttons, lNetComponents, lNet,
-  ExtCtrls, Menus, GeoJson, ComCtrls, EditBtn, ZConnection, ZDataset, RichMemo,
-  kmemo, JLabeledIntegerEdit, strutils, xquery, simpleinternet, fpHTTP,
-  RxPosition, BrookFCLEventLogHandler, process, lclIntf,
+  ExtCtrls, Menus, GeoJson, ComCtrls, EditBtn, ZConnection, ZDataset, kmemo,
+  JLabeledIntegerEdit, strutils, fpHTTP, RxPosition, process, lclIntf,
+  BrookFCLEventLogHandler, fphttpclient, OpenSslsockets, vessel, IniFiles,
+  AprsFi, About,
   {$IFDEF WINDOWS}
-          shellApi, w32internetaccess;
+          shellApi;
   {$ELSE}
      synapseinternetaccess;
   {$ENDIF}
@@ -21,6 +22,9 @@ type
   TShip = record
     MMSSI: string;
     Devise: string;
+    Position: TLatLon;
+    LastHeard: TdateTime;
+    Comment: String;
   end;
 
   TCoast = record
@@ -51,6 +55,8 @@ type
     EOS: string;
     CECC: string;
     Name: string;
+    Last: String;
+    Comment: String;
   end;
 
   { TFormMain }
@@ -80,6 +86,7 @@ type
     lable3: TLabel;
     memoLogs: TKMemo;
     MemoText: TKMemo;
+    mAprsFi: TMenuItem;
     mSaveLogBook: TMenuItem;
     mSettings: TMenuItem;
     mRxPosition: TMenuItem;
@@ -122,6 +129,8 @@ type
     procedure LTCPComponentError(const msg: string; aSocket: TLSocket);
     procedure LTCPComponentReceive(aSocket: TLSocket);
     procedure LTcpComponentDisconnect(aSocket: TLSocket);
+    procedure mAprsFiClick(Sender: TObject);
+    procedure MemoTextChange(Sender: TObject);
     procedure MenuItemAboutClick(Sender: TObject);
     procedure mExitClick(Sender: TObject);
     procedure mRxPositionClick(Sender: TObject);
@@ -133,15 +142,23 @@ type
     FRemoteNet: TLConnection;
     FIsServer: boolean;
     FRemoteLogging: boolean;
-    FFnt: TFontParams;
     WebUrl: String;
+    apiKey: String;
+    currentVessel: TShip;
+    dateFormat: String;
+    UserDataDir: String;
     function YaddUdpRecord(buffer: string): TYaddUdpRecord;
-    function GetLatLon(MMSI: string): TLatLon;
+    {retrive ship position using mmsi from aprs.fi}
     function getShipName(AMmsi: string): string;
     function SaveLogRecord(LogRecord: TYAddUDPRecord): boolean;
     function genGeoJson: integer;
     function GetCoastInfo(AMmsi: string): TCoast;
     function GetIpAddrList(): string;
+    { retrieve country from ship mmsi}
+    function getCountry(mmsi: String; a3: boolean = false): string;
+    {retrive JSON vessel info from aprs.fi using MMSI}
+    procedure getVessel(mmsi: string);
+    procedure resetCurrentVessel;
     procedure appendText(AMemo: TKmemo; AStr: string; AColor: TColor = clBlack);
     procedure XOpen(FileName:String);
   public
@@ -152,6 +169,7 @@ const
   SHIP_COLOR = clBlue;
   COAST_COLOR = clGreen;
   ERROR_COLOR = clRed;
+  {$i version.inc}
 
 var
   FormMain: TFormMain;
@@ -204,11 +222,11 @@ procedure TFormMain.cbWebServerChange(Sender: TObject);
 begin
      if cbWebServer.Checked then
      begin
-       {$IFDEF WINDOWS}
+       //{$IFDEF WINDOWS}
               Weburl := 'http://' + trim(GetIpAddrList) + ':' + trim(eHttpPort.Text) + '/map';
-       {$ELSE}
+       //{$ELSE}
               WebUrl := 'http://localhost:' + trim(eHttpPort.Text) + '/map';
-       {$ENDIF}
+       //{$ENDIF}
        lblUrl.Caption:= 'URL : ' + weburl;
        btnUrl.Enabled:= true;
        BrookThread.Start(StrToInt(eHttpPort.Text));
@@ -226,12 +244,22 @@ begin
 end;
 
 procedure TFormMain.btnCloseClick(Sender: TObject);
+var
+   filename: string;
 begin
-  if MessageDlg('Question', 'Exit Yadd2Map?', mtConfirmation,
-    [mbYes, mbNo], 0) = mrYes then
+ if memoText.Modified then
   begin
-    Close;
+       if MessageDlg('Question', 'Save received records?', mtConfirmation,
+          [mbYes, mbNo], 0) = mrYes then
+       begin
+          fileName := 'received.rtf';
+          memotext.SaveToRTF(UserDataDir + filename);
+       end;
   end;
+ if MessageDlg('Question', 'Exit Yadd2Map?', mtConfirmation,
+      [mbYes, mbNo], 0) = mrNo then
+      exit;
+ close;
 end;
 
 procedure TFormMain.btnMapClick(Sender: TObject);
@@ -241,13 +269,18 @@ begin
   nbRecord := genGeoJson;
   if nbRecord > 0 then
   begin
-    Appendtext(MemoLogs, FormatdateTime('dd/mm/yy hh:nn', now) +
+    Appendtext(MemoLogs, FormatdateTime(dateFormat, now) +
       ':  manual update: ' + IntToStr(nbRecord) + ' record to show on map', SHIP_COLOR);
     if timerdata.Enabled = False then
       timerData.Enabled := True;
     if MessageDlg('Question', 'Open new web brownser?', mtConfirmation,
       [mbYes, mbNo], 0) = mrYes then
-      XOpen('map/map.html');
+      if cbWebServer.Checked then
+         OpenURL(weburl)
+      else
+      begin
+        showmessage('Please enable web server first');
+      end;
   end
   else
     ShowMessage('Nothing to show on map today');
@@ -255,7 +288,12 @@ end;
 
 procedure TFormMain.btnUrlClick(Sender: TObject);
 begin
-  OpenURL(weburl);
+  if cbWebServer.Checked then
+         OpenURL(weburl)
+  else
+  begin
+       showmessage('Please enable web server first');
+  end;
 end;
 
 procedure TFormMain.cbRemoteLoggingChange(Sender: TObject);
@@ -280,18 +318,18 @@ end;
 
 procedure TFormMain.LTCPComponentError(const msg: string; aSocket: TLSocket);
 begin
-  AppendText(MemoLogs, FormatdateTime('dd/mm/yy hh:nn', now) + ': ' + msg, ERROR_COLOR);
+  AppendText(MemoLogs, FormatdateTime(dateFormat, now) + ': ' + msg, ERROR_COLOR);
 end;
 
 procedure TFormMain.LTCPComponentReceive(aSocket: TLSocket);
 var
   s: string;
   mRecord: TYaddUdpRecord;
-  mLatLon: TLatLon;
   n: integer;
   mmsiType: string;
   mmsicolor: TColor;
   coast: TCoast;
+  country: String;
 begin
   if aSocket.GetMessage(s) > 0 then
   begin
@@ -306,12 +344,13 @@ begin
           n := TLUdp(FRemoteNet).SendMessage(s, editRemoteHost.Text);
           editSent.Text := IntToStr(StrToInt(editSent.Text) + 1);
           if n < Length(s) then
-            Appendtext(MemoLogs, FormatdateTime('dd/mm/yy hh:nn', now) +
+            Appendtext(MemoLogs, FormatdateTime(dateFormat, now) +
               ': Error on send [' + IntToStr(n) + ']', ERROR_COLOR);
         end;
       end;
     end;
     mRecord := YaddUdpRecord(s);
+
     if AnsiContainsText(mrecord.MMSIFrom, '~') then
     begin
       Appendtext(Memotext, 'Incomplete MMSI: skipped', ERROR_COLOR);
@@ -321,10 +360,15 @@ begin
     begin
       mmsiType := 'SHIP';
       mmsicolor := SHIP_COLOR;
-      mLatLon := GetLatLon(mRecord.MMSIFrom);
-      mRecord.Lat := mLatLon.Latitude;
-      mRecord.Lon := mlatLon.Longitude;
-      mrecord.Name := GetShipName(mRecord.MMSIFrom);
+      getVessel(mRecord.MMSIFrom);
+      country := getCountry(mRecord.MMSIFrom);
+      if country <> emptyStr then
+         country := ' (' + country + ')';
+      mRecord.Lat := currentVessel.Position.Latitude;
+      mRecord.Lon := currentVessel.Position.Longitude;
+      mrecord.Name := currentVessel.Devise + country;
+      mRecord.Last := FormatDateTime('yyyy-mm-dd',currentVessel.LastHeard);
+      mRecord.Comment := currentVessel.Comment;
     end
     else if leftStr(mRecord.MMSIFrom, 1) = '0' then
     begin
@@ -334,12 +378,15 @@ begin
       mrecord.Name := coast.Name + ' (' + coast.Country + ')';
       mRecord.Lat := coast.Latitude;
       mRecord.Lon := coast.Longitude;
+      mRecord.Last := FormatDateTime('yyyy-mm-dd', now);
+      mRecord.Comment := '';
     end;
-    Appendtext(Memotext, FormatdateTime('dd/mm/yy hh:nn', now) +
+    Appendtext(Memotext, FormatdateTime(dateFormat, now) +
       ': ' + mmsiType + ' "' + mrecord.Name + '" at ' + mRecord.Lat +
       '/' + mRecord.Lon, mmsicolor);
     SaveLogRecord(mrecord);
   end;
+  resetCurrentVessel;
 end;
 
 procedure TFormMain.LTcpComponentDisconnect(aSocket: TLSocket);
@@ -347,10 +394,27 @@ begin
   AppendText(MemoLogs, 'Connection lost', ERROR_COLOR);
 end;
 
-procedure TFormMain.MenuItemAboutClick(Sender: TObject);
+procedure TFormMain.mAprsFiClick(Sender: TObject);
+var
+  FAprFi: TFAprsFi;
 begin
-  MessageDlg('Yadd To Map - copyright(c) 2018 under the Gnu Public Licence V3',
-    mtInformation, [mbOK], 0);
+  FaprsFi := TFAprsFi.Create(self);
+  FAprsFi.ShowModal;
+  FaprsFi.Free;
+end;
+
+procedure TFormMain.MemoTextChange(Sender: TObject);
+begin
+  memotext.Modified := true;
+end;
+
+procedure TFormMain.MenuItemAboutClick(Sender: TObject);
+var
+  FAbout: TFAbout;
+begin
+  FAbout := TFAbout.Create(self);
+  FAbout.ShowModal;
+  FAbout.free;
 end;
 
 procedure TFormMain.mExitClick(Sender: TObject);
@@ -393,7 +457,7 @@ end;
 
 procedure TFormMain.TimerDataTimer(Sender: TObject);
 begin
-  AppendText(MemoLogs, FormatdateTime('dd/mm/yy hh:nn', now) +
+  AppendText(MemoLogs, FormatdateTime(dateFormat, now) +
     ': update : ' + IntToStr(GenGeoJson) + ' records on map');
 end;
 
@@ -403,16 +467,40 @@ begin
   FRemoteNet := RemoteUDP;
   FIsServer := False;
   FRemoteLogging := False;
+  {$IFDEF WIN32}
+  UserDataDir := GetEnvironmentVariable('appdata') + DirectorySeparator +  'Yadd2Map' + DirectorySeparator;
+  {$ENDIF}
 end;
 
 procedure TFormMain.FormShow(Sender: TObject);
+var
+  myIni: TiniFile;
+  ConfigFilePath: String;
+  FaprFi: TFaprsFi;
+  flName: string;
 begin
   MemoText.Clear;
   MemoLogs.Clear;
+   ConfigFilePath := UserDataDir + 'yadd2map.conf';
+   myIni := TIniFile.Create(ConfigFilePath);
   try
-    sConnection.Database := GetCurrentDir + '/db/logbook.db';
+    apikey :=  myIni.ReadString('API', 'ApiKey', '');
+    if apikey = emptyStr then
+    begin
+         FAprsFi := TFAprsFi.create(self);
+         FaprsFi.btnCancel.Enabled := false;
+         FaprsFi.ShowModal;
+         apiKey := FaprsFi.ApiKey;
+         FaprsFi.free;
+    end;
+  finally
+    myIni.Free;
+  end;
+  memoText.ScrollBars := ssBoth;
+  try
+    sConnection.Database :=  UserDataDir + '/logbook.db';
     sconnection.Connect;
-    Appendtext(MemoLogs, FormatdateTime('dd/mm/yy hh:nn', now) +
+    Appendtext(MemoLogs, FormatdateTime(dateFormat, now) +
       ': Connected to database ' + sConnection.Database);
   except
     On e: Exception do
@@ -421,6 +509,17 @@ begin
       ShowMessage('Unable to connect to database "' + GetCurrentDir + '/db/logbook.db". Data will not be save');
     end;
   end;
+  flname := UserDataDir + 'received.rtf';
+  if fileexists(flname) then
+  begin
+    if MessageDlg('Question', 'restore today records?', mtConfirmation,
+    [mbYes, mbNo], 0) = mrYes then
+    begin
+         memotext.LoadFromRTF(flName);
+    end;
+  end;
+  memoText.Modified := false;
+  pageControl1.ActivePageIndex:= 0;;
 end;
 
 procedure TFormMain.TimerQuitTimer(Sender: TObject);
@@ -446,49 +545,12 @@ begin
   Result.CECC := arrs[11];
 end;
 
-function TFormMain.GetLatLon(MMSI: string): TLatLon;
-var
-  v: IXQValue;
-  arrs: array of string;
-  s: string;
-begin
-  try
-    for v in Query('doc("' + URL + MMSI + '")//a/.') do
-    begin
-      if AnsiContainsText(v.toString, '°') then
-      begin
-        arrs := v.toString.Split('/');
-        s := StringReplace(Trim(arrs[0]), '°', '', [rfReplaceAll]);
-        Result.Latitude := s;
-        s := StringReplace(Trim(arrs[1]), '°', '', [rfReplaceAll]);
-        Result.Longitude := s;
-      end;
-    end;
-  except
-    On e: Exception do
-    begin
-      AppendText(memoLogs, FormatdateTime('dd/mm/yy hh:nn', now) +
-        ': ' + e.Message, ERROR_COLOR);
-      Result.Latitude := '0';
-      Result.Longitude := '0';
-    end;
-  end;
-end;
-
 function TFormMain.getShipName(AMmsi: string): string;
-var
-  v: IXQValue;
 begin
-  try
-    for v in Query('doc("' + URL + Ammsi + '")//h1/.') do
-      Result := v.toString;
-  except
-    On e: Exception do
-    begin
-      appendText(memoLogs, FormatDateTime('hh:nn', now) + ': ' + e.Message, clRed);
-      Result := 'UNKNOW';
-    end;
-  end;
+  if currentVessel.MMSSI = AMmsi then
+     result := currentVessel.Devise
+  else
+     result := 'UNKNOW';
 end;
 
 procedure TFormMain.appendText(AMemo: TKMemo; AStr: string;
@@ -499,6 +561,7 @@ begin
   textBlock := AMemo.Blocks.AddTextBlock(Astr);
   AMemo.Blocks.AddParagraph;
   textBlock.TextStyle.Font.Color := Acolor;
+  Amemo.Modified := true;
 end;
 
 function TFormMain.SaveLogRecord(LogRecord: TYAddUDPRecord): boolean;
@@ -507,7 +570,10 @@ var
 begin
   try
     querySQL :=
-      'INSERT INTO logs (log_date, log_time, rx_frequencie, fmt, cat, mmsi_from, name_from, mmsi_to, tc1, tc2, latitude, longitude, frequencie, eos, cecc) VALUES ("' + FormatDateTime('yyyy-mm-dd', now) + '", "' + FormatDateTime('hh:nn:00', now) + '", "' + logRecord.rx + '", "' + logRecord.Fmt + '", "' + logRecord.Cat + '", "' + logRecord.MMSIFrom + '", "' + logRecord.Name + '", "' + logRecord.MMSITo + '", "' + logRecord.TC1 + '", "' + logRecord.TC2 + '", "' + logRecord.Lat + '", "' + logRecord.Lon + '", "' + logRecord.Freq + '", "' + logRecord.EOS + '", "' + logRecord.CECC + '");';
+      'INSERT INTO logs (log_date, log_time, rx_frequencie, fmt, cat, mmsi_from, name_from, mmsi_to, tc1, tc2, latitude, longitude, frequencie, eos, cecc, last, comment) VALUES ("' +
+      FormatDateTime('yyyy-mm-dd', now) + '", "' + FormatDateTime('hh:nn:00', now) + '", "' + logRecord.rx + '", "' + logRecord.Fmt + '", "' + logRecord.Cat + '", "' + logRecord.MMSIFrom + '", "' +
+      logRecord.Name + '", "' + logRecord.MMSITo + '", "' + logRecord.TC1 + '", "' + logRecord.TC2 + '", "' + logRecord.Lat + '", "' + logRecord.Lon + '", "' + logRecord.Freq + '", "' +
+      logRecord.EOS + '", "' + logRecord.CECC + '", "' + logRecord.Last + '", "' + logrecord.Comment + '");';
     sQuery.SQL.Clear;
     sQuery.SQL.Add(querySQL);
     sQuery.ExecSQL;
@@ -523,6 +589,7 @@ begin
   end;
 end;
 
+
 function TFormMain.genGeoJson: integer;
 var
   queryString: string;
@@ -537,7 +604,6 @@ var
   minute: string;
   hh: integer;
   recordCount: Integer;
-  i: Integer;
 begin
   if CompareDate(eDateHeard.Date, Now) = 0 then
   begin
@@ -594,14 +660,13 @@ begin
   except
     On e: Exception do
     begin
-      Appendtext(memoLogs, FormatdateTime('dd/mm/yy hh:nn', now) +
+      Appendtext(memoLogs, FormatdateTime(dateFormat, now) +
         ': ' + e.Message, ERROR_COLOR);
       Result := 0;
       exit;
     end;
   end;
   RecordCount := MapQuery.RecordCount;
-  i := 1;
   if RecordCount > 0 then
   begin
     ProgressBar1.Max := mapQuery.RecordCount;
@@ -621,6 +686,8 @@ begin
       geoJsondata.Properties.Name := mapQuery.FieldByName('name_from').AsString;
       geoJsondata.Properties.MMSI := mapQuery.FieldByName('mmsi_from').AsString;
       geoJsondata.Properties.Frequency := mapQuery.FieldByName('rx_frequencie').AsString;
+      geoJsondata.Properties.Last := mapQuery.FieldByName('last').AsString;
+      geoJsondata.Properties.Comment := mapQuery.FieldByName('comment').AsString;
       if leftStr(geoJsondata.Properties.MMSI, 1) <> '0' then
         geoJsondata.Properties.Description := 'SHIP'
       else
@@ -680,7 +747,7 @@ var
   AProcess: TProcess;
   s: string;
   sl: TStringList;
-  i, n: integer;
+  i: integer;
 
 begin
   Result:='';
@@ -738,9 +805,75 @@ begin
  prc.free;
  {$ENDIF}
  {$IFDEF WINDOWS}
+ begin
   ShellExecute(self.Handle, PChar('open'), PChar(Filename),
         PChar(''), PChar(''), 1);
  {$ENDIF}
+end;
+
+procedure TFormMain.getVessel(mmsi: string);
+var
+  AprsFiUrl: string;
+  httpClient: TFPHTTPClient;
+  aVessel: TVessel;
+  rawJson: String;
+begin
+  aVessel := TVessel.Create;
+  AprsFiUrl := 'https://api.aprs.fi/api/get?name=' + mmsi +
+    '&what=loc&apikey=' + apikey + '&format=json';
+  httpClient := TFPHTTPClient.Create(nil);
+  httpClient.AddHeader('Accept', 'application/json');
+  httpClient.AddHeader('Content-Type', 'application/json');
+  httpClient.AddHeader('User-Agent','Yadd2Map/' + version + '(+https://github.com/ClaudeMa/yadd2map/)');
+  try
+    rawJson := httpClient.Get(AprsFiUrl);
+    if AnsiContainsStr(rawJson, 'fail') then
+    begin
+         ShowMessage('Http request fail. maybe wrong API KEY. Please check');
+         exit;
+    end;
+    aVessel.setVesselData(rawJson);
+    currentVessel.Devise := avessel.Name;
+    currentVessel.Position := aVessel.Position;
+    currentVessel.MMSSI := aVessel.Mmsi;
+    currentVessel.Comment := aVessel.Comment;
+    currentVessel.LastHeard := aVessel.LastHeard;
+  finally
+  aVessel.free;
+  httpClient.Free;
+  end;
+end;
+
+procedure TFormMain.resetCurrentVessel;
+begin
+    currentVessel.MMSSI := '';
+    currentVessel.Devise:= '';
+    currentVessel.Position.Latitude := '';
+    currentVessel.Position.Longitude := '';
+    currentVessel.LastHeard := 0;
+    currentVessel.Comment := '';
+end;
+
+function TFormMain.getCountry(mmsi: String; a3: boolean = false): string;
+begin
+     result := '';
+     squery.SQL.Clear;
+     sQuery.SQL.Text := 'SELECT * FROM mid where mid = ' + leftStr(mmsi,3);
+     try
+     squery.Open;
+     if a3 then
+        result := squery.FieldByName('alpha3').AsString
+     else
+       result := squery.FieldByName('alpha2').AsString;
+     squery.close;
+     except
+       on e: Exception do
+           begin
+             Appendtext(MemoLogs, FormatDateTime('hh:nn', now) + ': ' +
+               squery.SQL.Text, ERROR_COLOR);
+             Appendtext(MemoLogs, FormatDateTime('hh:nn', now) + ': ' + e.Message, ERROR_COLOR);
+           end;
+     end;
 end;
 
 initialization

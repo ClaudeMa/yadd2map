@@ -9,7 +9,7 @@ uses
   lazcontrols,
   main,
   geojson,
-  rxposition, BrookThread, brookdt, ActionMap
+  rxposition, BrookThread, brookdt, ActionMap, aprsfi, about
   {$IFDEF UNIX}
   , cthreads
   {$ENDIF} ;
@@ -21,5 +21,7 @@ begin
   Application.Title:='Yadd2Map';
   Application.Initialize;
   Application.CreateForm(TFormMain, FormMain);
+  Application.CreateForm(TFAprsfi, FAprsfi);
+  Application.CreateForm(TFAbout, FAbout);
   Application.Run;
 end.

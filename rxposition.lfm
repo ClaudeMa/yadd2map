@@ -8,9 +8,10 @@ object FRxPosition: TFRxPosition
   Caption = 'RX position'
   ClientHeight = 190
   ClientWidth = 243
+  OnCreate = FormCreate
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '1.8.2.0'
+  LCLVersion = '2.2.0.4'
   object Panel1: TPanel
     Left = 0
     Height = 50
@@ -59,19 +60,11 @@ object FRxPosition: TFRxPosition
       Width = 162
       DisplayFormat = '#,0.0000000'
       Decimals = 9
-      Value = 0
       NegativeColor = clDefault
       Alignment = taRightJustify
-      EditLabel.AnchorSideLeft.Control = eLatitude
-      EditLabel.AnchorSideRight.Control = eLatitude
-      EditLabel.AnchorSideRight.Side = asrBottom
-      EditLabel.AnchorSideBottom.Control = eLatitude
-      EditLabel.Left = 40
       EditLabel.Height = 15
-      EditLabel.Top = 8
       EditLabel.Width = 162
       EditLabel.Caption = 'Latitude'
-      EditLabel.ParentColor = False
       TabOrder = 0
     end
     object eLongitude: TJLabeledFloatEdit
@@ -81,20 +74,21 @@ object FRxPosition: TFRxPosition
       Width = 161
       DisplayFormat = '#,0.0000000'
       Decimals = 9
-      Value = 0
       NegativeColor = clDefault
       Alignment = taRightJustify
-      EditLabel.AnchorSideLeft.Control = eLongitude
-      EditLabel.AnchorSideRight.Control = eLongitude
-      EditLabel.AnchorSideRight.Side = asrBottom
-      EditLabel.AnchorSideBottom.Control = eLongitude
-      EditLabel.Left = 41
       EditLabel.Height = 15
-      EditLabel.Top = 58
       EditLabel.Width = 161
       EditLabel.Caption = 'Longitude'
-      EditLabel.ParentColor = False
       TabOrder = 1
+    end
+    object StaticText1: TStaticText
+      Left = 8
+      Height = 32
+      Top = 104
+      Width = 224
+      Alignment = taCenter
+      Caption = 'You can click on map'#13#10'to get your position'
+      TabOrder = 2
     end
   end
 end

@@ -21,6 +21,9 @@ type
     Date: string;
     Hour: string;
     Frequency: String;
+    Last: String;
+    Comment: String;
+    uptodate: Integer;
   end;
 
   TGEOJsonData = record
@@ -75,6 +78,9 @@ begin
   fileData.Add(TABTABTAB + TAB + '"Mmsi": "' + AGeoJsonData.Properties.MMSI + '",');
   fileData.Add(TABTABTAB + TAB + '"Name": "' + AGeoJsonData.Properties.Name + '",');
   fileData.Add(TABTABTAB + TAB + '"Frequency": "' + AGeoJsonData.Properties.Frequency + '",');
+  fileData.Add(TABTABTAB + TAB + '"Last": "' + AGeoJsonData.Properties.Last + '",');
+  fileData.Add(TABTABTAB + TAB + '"uptodate": "' + IntToStr(AGeoJsonData.Properties.uptodate) + '",');
+  fileData.Add(TABTABTAB + TAB + '"Comment": "' + AGeoJsonData.Properties.Comment + '",');
   fileData.Add(TABTABTAB + TAB + '"Description": "' +
     AGeoJsonData.Properties.Description + '"');
   fileData.Add('');

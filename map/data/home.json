@@ -4,16 +4,20 @@
 		{
 			"type": "Feature",
 			"properties": {
-				"Date": "02/12/2018",
-				"Hour": "13/11/00",
+				"Date": "30/05/2022",
+				"Hour": "17:52",
 				"Mmsi": "",
 				"Name": "RX position",
+				"Frequency": "",
+				"Last": "",
+				"uptodate": "1431655765",
+				"Comment": "",
 				"Description": ""
 
 			},
 			"geometry": {
 				"type": "Point",
-				"coordinates": [3.4771729,45]
+				"coordinates": [3.51668,45.9442]
 			}
 		}
 	]

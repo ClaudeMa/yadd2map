@@ -28,9 +28,11 @@
     width: 100vw;
 	}
     
-    button {
+    #rxcoasts,  #rxships, #rxall{
         width: 100px;
+		mergin-left: 5px;
     }
+	
 	.my-label {
     font-size: 11px;
 	border: 0;
@@ -46,10 +48,11 @@
 <div class="row">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 <div class="btn-group">
-        <button type="button" id="rxcoasts" class="btn btn-success">Coasts</button>
-        <button type="button" id="rxships" class="btn btn-primary">Ships</button>
-        <button type="button" id="rxall" class="btn btn-danger">All</button>
-		<button type="button" id="monitor" class="btn btn-link">DSC Monitoring by GM4SLV</button>
+        <button type="button" id="rxcoasts" class="btn btn-success mr-1">Coasts</button>
+        <button type="button" id="rxships" class="btn btn-primary mr-1">Ships</button>
+        <button type="button" id="rxall" class="btn btn-danger mr-1">All</button>
+		<button type="button" id="monitor" class="btn btn-link mr-1">DSC Monitoring by GM4SLV</button>
+		<button type="button" id="aprs" class="btn btn-link mr-1">APRS.FI</button>
     </div>
 </div>
 </div>
@@ -136,11 +139,13 @@
             pointToLayer: function(feature, latlng) {
 				mylat = latlng.lat;
 				mylon = latlng.lng;
+				var popupText = "RX position<br/>Latitude: <b>" + mylat + "</b><br/>" +
+								"Longitude: <b>" + mylon + "</b>"
 				map.setView([mylat, mylon], 2);
                 return L.marker(latlng, {
                     icon: home
                 }).on('mouseover', function() {
-                    this.bindPopup('RX Position').openPopup();
+                    this.bindPopup(popupText).openPopup();
                 });
             }
         });
@@ -157,12 +162,20 @@
             pointToLayer: function(feature, latlng) {
 				var mydistance = distance(mylat, mylon, latlng.lat, latlng.lng, 'K');
 				$('#list_ship').append('<li><a href="#" id="mmsi_' + feature.properties.Mmsi + '">' + feature.properties.Name+'</a></li>');
-				var popup = L.popup().setContent(
-					"MMSI: <a href='https://www.marinetraffic.com/en/ais/details/ships/mmsi:" + feature.properties.Mmsi + "' target='_blank'>" + feature.properties.Mmsi + 
-					"</a><br/>Name: <b>" + feature.properties.Name + "</b><br/>Last heard: " + feature.properties.Date + " at " + feature.properties.Hour + 
+				var popupText = 
+					"MMSI: <a href='https://www.marinetraffic.com/en/ais/details/ships/mmsi:" 
+					+ feature.properties.Mmsi + "' target='_blank'>" + feature.properties.Mmsi + 
+					"</a><br/>Name: <b>" + feature.properties.Name + "</b><br/>Last heard: " 
+					+ feature.properties.Date + " at " + feature.properties.Hour + 
 					"<br/>On " + feature.properties.Frequency + " Khz" +
-					"<br/>distance: " + mydistance.toFixed(2) + " km"
-				);
+					"<br/>Distance: " + mydistance.toFixed(2) + " km" +
+					"<br/>Comment: " +feature.properties.Comment
+				if (feature.properties.uptodate == 1)
+					popupText += "<span style='color:green'>";
+				else
+					popupText += "<span style='color:red'>";
+				popupText += "<br/>Last seen position:  " + feature.properties.Last + "</span>"
+				var popup = L.popup().setContent(popupText);
                 var marker = L.marker(latlng, {
                     icon: ship
                 }).bindPopup(popup)
@@ -189,7 +202,7 @@
 					"MMSI: " + feature.properties.Mmsi + 
 					"<br/>Name: <b>" + feature.properties.Name + "</b><br/>Last heard: " + feature.properties.Date + " at " + feature.properties.Hour + 
 					"<br/>On " + feature.properties.Frequency + " Khz" +
-					"<br/>distance: " + mydistance.toFixed(2) + " km"
+					"<br/>Distance: " + mydistance.toFixed(2) + " km"
 				);
 				var marker =  L.marker(latlng, {				
 					icon: coast
@@ -224,7 +237,10 @@
             map.addLayer(rxcoasts)
         });
 		$("#monitor").click(function() {
-           window.open("http://gm4slv.plus.com:8000/index.php");
+           window.open("http://www.yaddnet.org");
+        });
+		$("#aprs").click(function() {
+           window.open("https://aprs.fi");
         });
 		
 		$('[id^="mmsi_"]').on('click', function(e) {
@@ -250,6 +266,15 @@
 			return false;
 		});
     });
+	
+	map.on("dblclick", function (event) {
+		var content = 'latitude;&nbsp;<b>' + event.latlng.lat.toFixed(5).toString() + '</b><br/>' +
+		'longitude:&nbsp;<b>' + event.latlng.lng.toFixed(5).toString() + '</b>';
+		console.log("user right-clicked on map coordinates: " + event.latlng.toString());
+		var m = L.marker(event.latlng).addTo(map).bindPopup(L.popup().setContent(content))
+		m.openPopup()
+		return false
+});
 	
     </script>
 </body>

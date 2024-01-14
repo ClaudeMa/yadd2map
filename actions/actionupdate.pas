@@ -79,7 +79,7 @@ begin
     end;
 
     Query.SQL.Clear;
-    Query.SQL.Add('SELECT * FROM logs WHERE log_date = "2018-04-26"' + where + ';');
+    Query.SQL.Add('SELECT * FROM logs WHERE log_date = "' + FormatDateTime('yyyy-mm-dd',now) + '"' + where + ';');
     Query.Open;
     if Query.RecordCount = 0 then
       Write('no data')
@@ -110,6 +110,7 @@ var
   startTime: string;
   minute: string;
   hh: integer;
+  lastDate: TDateTime;
 begin
   GeoJson := TGeoJson.Create;
   GeoJson.AddHeader;
@@ -122,11 +123,18 @@ begin
     geoJsondata.Geometry.Longitude :=
       StringReplace(AQuery.FieldByName('longitude').AsString, ',',
       '.', [rfReplaceAll]);
-    geoJsondata.Properties.Date := AQuery.FieldByName('log_date').AsString;
-    geoJsondata.Properties.Hour := AQuery.FieldByName('log_time').AsString;
+    geoJsondata.Properties.Date := FormatDateTime(shortdateformat, AQuery.FieldByName('log_date').AsDateTime);
+    geoJsondata.Properties.Hour := FormatDateTime(ShortTimeFormat,AQuery.FieldByName('log_time').asDateTime);
     geoJsondata.Properties.Name := AQuery.FieldByName('name_from').AsString;
     geoJsondata.Properties.MMSI := AQuery.FieldByName('mmsi_from').AsString;
     geoJsondata.Properties.Frequency := AQuery.FieldByName('rx_frequencie').AsString;
+    lastDate :=  AQuery.FieldByName('last').AsDateTime;
+    geoJsondata.Properties.Last :=  FormatDateTime(ShortDateFormat, lastdate);
+    if SameDate(lastDate, Now) then
+       geoJsonData.Properties.uptodate :=  1
+    else
+       geojsonData.Properties.uptodate := 0;
+    geoJsondata.Properties.Comment := AQuery.FieldByName('comment').AsString;
     if leftStr(geoJsondata.Properties.MMSI, 1) <> '0' then
       geoJsondata.Properties.Description := 'SHIP'
     else

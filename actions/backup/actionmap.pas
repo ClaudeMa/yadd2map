@@ -19,6 +19,8 @@ type
   private
     Connection: TZConnection;
     Query: TZQuery;
+    dateFormat: String;
+    UserDataDir: String;
     function genHour(hh: integer; mm: integer; diff: integer = 2): string;
     function genGeoJson(AQuery: TZQuery): integer;
     function checkValue(AParamValue: string): boolean;
@@ -31,12 +33,16 @@ implementation
 constructor TMap.Create;
 begin
   inherited Create;
+  {$IFDEF WIN32}
+  UserDataDir := GetEnvironmentVariable('appdata') + DirectorySeparator +  'Yadd2Map' + DirectorySeparator;
+  {$ENDIF}
   Connection := TZConnection.Create(nil);
-  Connection.Database := GetCurrentDir + DirectorySeparator + 'db/logbook.db';
+  Connection.Database := UserDtataDir + 'logbook.db';
   Connection.Protocol := 'sqlite-3';
   Connection.Connect;
   Query := TZQuery.Create(nil);
   Query.Connection := Connection;
+  dateFormat := ShortDateFormat;
 end;
 
 destructor TMap.Destroy;
@@ -131,10 +137,10 @@ end;
 
 function TMap.genGeoJson(AQuery: TZQuery): integer;
 var
-
   geoJSON: TGeoJson;
   geoJsonData: TGEOJsonData;
   nbRecord: integer = 0;
+  lastDate: TdateTime;
 begin
   GeoJson := TGeoJson.Create;
   GeoJson.AddHeader;
@@ -147,11 +153,18 @@ begin
     geoJsondata.Geometry.Longitude :=
       StringReplace(AQuery.FieldByName('longitude').AsString, ',',
       '.', [rfReplaceAll]);
-    geoJsondata.Properties.Date := AQuery.FieldByName('log_date').AsString;
+    geoJsondata.Properties.Date := FormatDateTime(dateFormat, AQuery.FieldByName('log_date').AsDateTime);
     geoJsondata.Properties.Hour := AQuery.FieldByName('log_time').AsString;
     geoJsondata.Properties.Name := AQuery.FieldByName('name_from').AsString;
     geoJsondata.Properties.MMSI := AQuery.FieldByName('mmsi_from').AsString;
-    geoJsondata.Properties.Frequency := AQuery.FieldByName('frequencie').AsString;
+    lastDate := AQuery.FieldByName('last').AsDateTime;
+    geoJsondata.Properties.Last := FormatDateTime(shortDateFormat, lastDate);
+    if SameDate(lastDate, Now) then
+       geoJsondata.Properties.uptodate := 1
+    else
+      geoJsondata.Properties.uptodate := 0;
+    geoJsondata.Properties.Comment := AQuery.FieldByName('comment').AsString;
+    geoJsondata.Properties.Frequency := AQuery.FieldByName('rx_frequencie').AsString;
     if leftStr(geoJsondata.Properties.MMSI, 1) <> '0' then
       geoJsondata.Properties.Description := 'SHIP'
     else

@@ -23,14 +23,17 @@
     padding: 0;
     margin: 0;
 	}
+	
 	html, body, #map {
     height: 100%;
     width: 100vw;
 	}
     
-    button {
+    #rxcoasts,  #rxships, #rxall{
         width: 100px;
+		mergin-left: 5px;
     }
+	
 	.my-label {
     font-size: 11px;
 	border: 0;
@@ -50,6 +53,7 @@
         <button type="button" id="rxships" class="btn btn-primary">Ships</button>
         <button type="button" id="rxall" class="btn btn-danger">All</button>
 		<button type="button" id="monitor" class="btn btn-link">DSC Monitoring by GM4SLV</button>
+		<button type="button" id="aprs" class="btn btn-link">APRS.FI</button>
     </div>
 </div>
 </div>
@@ -142,6 +146,8 @@
 					"MMSI: <a href='https://www.marinetraffic.com/en/ais/details/ships/mmsi:" + feature.properties.Mmsi + "' target='_blank'>" + feature.properties.Mmsi + 
 					"</a><br/>Name: <b>" + feature.properties.Name + "</b><br/>Last heard: " + feature.properties.Date + " at " + feature.properties.Hour + 
 					"<br/>On " + feature.properties.Frequency + " Khz" +
+					"<br/>Last aprs.fi report: " + feature.properties.Last + 
+					"<br/>Comment : " + feature.properties.Comment +
 					"<br/>distance: " + mydistance.toFixed(2) + " km"
 				);
                 var marker = L.marker(latlng, {
@@ -203,7 +209,10 @@
             map.addLayer(rxcoasts)
         });
 		$("#monitor").click(function() {
-           window.open("http://gm4slv.plus.com:8000/index.php");
+           window.open("http://www.yaddnet.org/");
+        });
+		$("#aprs").click(function() {
+           window.open("https://aprs.fi");
         });
 		
 		$('[id^="mmsi_"]').on('click', function(e) {
@@ -229,6 +238,13 @@
 			return false;
 		});
     });
+	
+	//Callback click sur la carte
+	function onMapClick(e) {
+		popup(e.latlng.lat.toString() + ' ' e.latlng.lng.toString()); 
+	}
+	
+	map.on('dblclick', onMapClick);
 	
     </script>
 </body>
